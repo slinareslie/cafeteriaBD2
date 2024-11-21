@@ -1,14 +1,20 @@
 <?php
-function getConnection() {
-    $host = 'localhost';
-    $dbname = 'CafeteriaDB';
-    $username = 'root';
-    $password = '';
+class Database {
+    private $host = 'localhost';
+    private $db_name = 'CafeteriaDB';
+    private $username = 'root';
+    private $password = '';
+    private $conn;
 
-    try {
-        return new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    } catch (PDOException $e) {
-        die("Error de conexión: " . $e->getMessage());
+    public function connect() {
+        $this->conn = null;
+        try {
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo "Error de conexión: " . $e->getMessage();
+        }
+        return $this->conn;
     }
 }
 ?>

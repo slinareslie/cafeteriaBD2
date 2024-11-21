@@ -3,18 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal - Cafetería</title>
-    <link rel="stylesheet" href="/public/assets/css/style.css">
+    <title>Inicio</title>
 </head>
 
 <body>
-    <header>
-        <h1>Bienvenido a la Cafetería</h1>
-        <nav>
-            <a href="/public/index.php?controller=producto&action=listar">Ver Productos</a>
-        </nav>
-    </header>
+    <h1>Bienvenido a la Cafetería</h1>
+    <a href="index.php?controller=cliente&action=seleccionarSede">Cliente</a>
+    <a href="index.php?controller=empleado&action=seleccionarSede">Empleado</a>
 </body>
 
 </html>

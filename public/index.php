@@ -14,7 +14,6 @@ if (isset($_GET['action'])) {
 }
 
 require_once "../app/controllers/{$controller}Controller.php";
-
 $controllerClass = ucfirst($controller) . "Controller";
 $controllerInstance = new $controllerClass();
 $controllerInstance->$action();

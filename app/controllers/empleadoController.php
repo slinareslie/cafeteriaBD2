@@ -1,15 +1,23 @@
 <?php
-require_once "../app/models/Empleado.php";
+require_once "../app/models/Pedido.php";
+require_once "../app/models/Sede.php";
 
 class EmpleadoController {
-    public function verPedidoMesa($numero_mesa) {
-        $pedido = Empleado::obtenerPedidoMesa($numero_mesa);
-        require_once "../app/views/empleado/pedido_mesa.php";
+    public function seleccionarSede() {
+        $sedeModel = new Sede();
+        $sedes = $sedeModel->getAll();
+        require_once "../app/views/empleado/seleccionarSede.php";
     }
 
-    public function procesarPago($pedido_id) {
-        $pago = Empleado::obtenerPago($pedido_id);
-        require_once "../app/views/empleado/factura.php";
+    public function verPedido() {
+        $pedidoModel = new Pedido();
+        $pedidos = $pedidoModel->getPendientes();
+        require_once "../app/views/empleado/verPedido.php";
+    }
+
+    public function facturacion() {
+        $pedidoId = $_GET['pedido_id'];
+        require_once "../app/views/empleado/facturacion.php";
     }
 }
 ?>
