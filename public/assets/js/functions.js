@@ -24,7 +24,6 @@ function showCategory(category) {
     }
   });
 
-  // Actualiza las pestañas activas
   document.querySelectorAll(".tab-button").forEach((button) => {
     button.classList.remove("active");
   });
