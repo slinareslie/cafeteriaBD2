@@ -12,6 +12,30 @@ function filterProducts() {
   });
 }
 
+function showCategory(category) {
+  const products = document.querySelectorAll(".product-card");
+
+  products.forEach((product) => {
+    const productCategory = product.getAttribute("data-category");
+    if (productCategory === category || category === "all") {
+      product.style.display = "block";
+    } else {
+      product.style.display = "none";
+    }
+  });
+
+  // Actualiza las pestañas activas
+  document.querySelectorAll(".tab-button").forEach((button) => {
+    button.classList.remove("active");
+  });
+  const activeTab = Array.from(document.querySelectorAll(".tab-button")).find(
+    (btn) => btn.textContent.toLowerCase().includes(category)
+  );
+  if (activeTab) {
+    activeTab.classList.add("active");
+  }
+}
+
 function sortProducts() {
   const sortValue = document.getElementById("sort-options").value;
   const productsContainer = document.getElementById("products-grid");
