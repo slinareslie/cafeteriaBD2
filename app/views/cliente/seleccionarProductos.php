@@ -10,10 +10,19 @@
 <body>
     <h1>Selecciona los Productos</h1>
     <div id="products-container">
+        <div class="search-sort-container">
+            <input type="text" id="search-bar" placeholder="Buscar productos..." oninput="filterProducts()">
+            <select id="sort-options" onchange="sortProducts()">
+                <option value="default">Ordenar por</option>
+                <option value="asc">Precio: Menor a Mayor</option>
+                <option value="desc">Precio: Mayor a Menor</option>
+            </select>
+        </div>
         <form action="index.php?controller=cliente&action=confirmarCompra" method="POST">
-            <div class="products-grid">
+            <div class="products-grid" id="products-grid">
                 <?php foreach ($productos as $producto): ?>
-                <div class="product-card">
+                <div class="product-card" data-name="<?php echo htmlspecialchars($producto['nombre_producto']); ?>"
+                    data-price="<?php echo $producto['precio']; ?>">
                     <img src="https://placehold.co/300x200"
                         alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" class="product-image">
                     <h3><?php echo htmlspecialchars($producto['nombre_producto']); ?></h3>
@@ -36,6 +45,7 @@
             <button type="submit" class="btn-confirm">Confirmar</button>
         </form>
     </div>
+    <script src="../public/assets/js/functions.js"></script>
 </body>
 
 </html>
