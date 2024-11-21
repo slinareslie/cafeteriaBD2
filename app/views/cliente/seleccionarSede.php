@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Seleccionar Sede</title>
+    <link rel="stylesheet" href="../public/assets/css/style.css">
+
 </head>
 
 <body>

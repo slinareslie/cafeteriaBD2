@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../public/assets/css/style.css">
     <title>Facturación</title>
 </head>
 
