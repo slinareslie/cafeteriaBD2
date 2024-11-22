@@ -66,8 +66,18 @@
                     </div>
                     <?php endforeach; ?>
                 </div>
+
+                
+                <button type="submit" class="btn-confirm">Confirmar</button>
+                
+            </form>
+            <form action="facturacion.php" method="POST" id="cart-form">
+                <input type="hidden" name="subtotal" id="hidden-subtotal">
+                <input type="hidden" name="igv" id="hidden-igv">
+                <input type="hidden" name="total" id="hidden-total">
                 <button type="submit" class="btn-confirm">Confirmar</button>
             </form>
+
         </div>
         <script src="../public/assets/js/functions.js"></script>
 </body>

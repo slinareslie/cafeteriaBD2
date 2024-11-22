@@ -138,7 +138,6 @@ document.querySelectorAll(".product-card").forEach((card) => {
     updateCartUI();
   });
 
-  // Actualiza la cantidad al cambiarla directamente en el input
   const quantityInput = card.querySelector(`#cantidad-${productId}`);
   quantityInput.addEventListener("change", (e) => {
     if (cart[productId]) {
@@ -149,3 +148,51 @@ document.querySelectorAll(".product-card").forEach((card) => {
 });
 
 document.getElementById("cart-button").addEventListener("click", toggleCart);
+
+// prueba factura tocas = BAN
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const productCheckboxes = document.querySelectorAll('.product-selection input[type="checkbox"]');
+  const cartTotalElement = document.getElementById('cart-total');
+  const hiddenSubtotal = document.getElementById('hidden-subtotal');
+  const hiddenIgv = document.getElementById('hidden-igv');
+  const hiddenTotal = document.getElementById('hidden-total');
+
+  const calculateCartTotal = () => {
+      let total = 0;
+
+      productCheckboxes.forEach(checkbox => {
+          if (checkbox.checked) {
+              const productCard = checkbox.closest('.product-card');
+              const price = parseFloat(productCard.dataset.price); 
+              const quantityInput = productCard.querySelector('.quantity-container input');
+              const quantity = parseInt(quantityInput.value, 10) || 1; 
+              total += price * quantity;
+          }
+      });
+
+      const igv = total * 0.18;
+      const finalTotal = total + igv;
+
+      cartTotalElement.textContent = total.toFixed(2); 
+      hiddenSubtotal.value = total.toFixed(2);
+      hiddenIgv.value = igv.toFixed(2);
+      hiddenTotal.value = finalTotal.toFixed(2);
+
+      console.log("Subtotal:", hiddenSubtotal.value);
+      console.log("IGV:", hiddenIgv.value);
+      console.log("Total:", hiddenTotal.value);
+  };
+
+
+  productCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', calculateCartTotal);
+      const quantityInput = checkbox.closest('.product-card').querySelector('.quantity-container input');
+      quantityInput.addEventListener('input', calculateCartTotal);
+  });
+});
+
+
+//fin de prueba factura
