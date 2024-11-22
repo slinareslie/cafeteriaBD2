@@ -69,6 +69,7 @@
                 <?php endforeach; ?>
             </div>
             <button type="submit" class="btn-confirm">Proceder al Pago</button>
+            <input type="hidden" name="cart_total_value" id="cart-total-value">
         </form>
     </div>
     <script src="../public/assets/js/functions.js"></script>

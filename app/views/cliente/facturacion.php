@@ -1,8 +1,11 @@
 <?php
-$cartDetails = isset($_POST['cart_details']) ? json_decode($_POST['cart_details'], true) : [];
-$subtotal = isset($_POST['subtotal']) ? floatval($_POST['subtotal']) : 0.00;
-$igv = isset($_POST['igv']) ? floatval($_POST['igv']) : 0.00;
-$total = isset($_POST['total']) ? floatval($_POST['total']) : 0.00;
+$cartTotalValue = isset($_POST['cart_total_value']) && is_numeric($_POST['cart_total_value']) 
+    ? floatval($_POST['cart_total_value']) 
+    : 0.00;
+
+$subtotal = $cartTotalValue; 
+$igv = $subtotal * 0.18; 
+$total = $subtotal + $igv; 
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -69,21 +72,56 @@ $total = isset($_POST['total']) ? floatval($_POST['total']) : 0.00;
             </div>
             <div class="summary-section">
                 <h2>Resumen de Compra</h2>
-                <ul>
-                    <?php foreach ($cartDetails as $product): ?>
-                    <li>
-                        <?= htmlspecialchars($product['name']) ?> -
-                        <?= $product['quantity'] ?> x S/ <?= number_format($product['price'], 2) ?> =
-                        S/ <?= number_format($product['total'], 2) ?>
-                    </li>
-                    <?php endforeach; ?>
-                </ul>
-                <p>Subtotal: <span>S/ <?= number_format($subtotal, 2) ?></span></p>
-                <p>IGV (18%): <span>S/ <?= number_format($igv, 2) ?></span></p>
-                <p>Total: <span id="total-display">S/ <?= number_format($total, 2) ?></span></p>
+                
+                <p>SubTotal: <span id="subtotal-display">
+                     <ul>
+                        <?php
+                        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                            $cartTotalValue = $_POST['cart_total_value'] ?? '0.00';
+                            echo "S/ " . htmlspecialchars($cartTotalValue);
+                        }
+                        ?>
+                    </ul>
+                </span></p>
+               
+                <p>IGV (18%): <span id="igv-display">S/ <?= number_format($igv, 2) ?></span></p>
+                <p>Total: <span id="total-display">S/ <?= number_format($total, 2) ?></span></p>              
+                
+
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const subtotalHidden = document.querySelector("input[name='subtotal']");
+        const igvHidden = document.querySelector("input[name='igv']");
+        const totalHidden = document.querySelector("input[name='total']");
+        
+        const subtotalDisplay = document.getElementById("subtotal-display");
+        const igvDisplay = document.getElementById("igv-display");
+        const totalDisplay = document.getElementById("total-display");
+
+        function updateValues() {
+            const subtotal = parseFloat(subtotalHidden.value) || 0;
+            const igv = subtotal * 0.18;
+            const total = subtotal + igv;
+
+            
+            igvDisplay.textContent = `S/ ${igv.toFixed(2)}`;
+            totalDisplay.textContent = `S/ ${total.toFixed(2)}`;
+
+            
+            igvHidden.value = igv.toFixed(2);
+            totalHidden.value = total.toFixed(2);
+        }
+
+        updateValues();
+
+
+        subtotalHidden.addEventListener("input", updateValues);
+        });
+    </script>
+    <script src="../public/assets/js/functions.js"></script>
 </body>
 
 </html>

@@ -131,3 +131,10 @@ document.querySelectorAll(".product-card").forEach((card) => {
 });
 
 document.getElementById("cart-button").addEventListener("click", toggleCart);
+
+
+document.querySelector('form').addEventListener('submit', function (event) {
+  const cartTotal = document.getElementById('cart-total').textContent;
+  document.getElementById('cart-total-value').value = cartTotal;
+});
+
