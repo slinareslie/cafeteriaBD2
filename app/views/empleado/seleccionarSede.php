@@ -15,7 +15,7 @@
             <div class="sede-card">
                 <h3><?php echo htmlspecialchars($sede['nombre_sede']); ?></h3>
                 <p><?php echo htmlspecialchars($sede['direccion_sede']); ?></p>
-                <form action="index.php?controller=cliente&action=seleccionarProductos" method="POST">
+                <form action="index.php?controller=empleado&action=seleccionarProductos" method="POST">
                     <button type="submit" name="sede_id" value="<?php echo $sede['sede_id']; ?>" class="btn-select">
                         Seleccionar Sede
                     </button>

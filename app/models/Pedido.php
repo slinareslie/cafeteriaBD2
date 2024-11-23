@@ -1,7 +1,7 @@
 <?php
 class Pedido {
     public static function obtenerDetalles($pedido_id) {
-        $db = getConnection();
+        $db = (new Database())->connect();
         $query = $db->prepare("SELECT p.nombre_producto, dp.cantidad, dp.precio_unitario
                                FROM Detalle_Pedido dp
                                JOIN Productos p ON dp.producto_id = p.producto_id
@@ -11,7 +11,7 @@ class Pedido {
     }
 
     public static function obtenerPedidosPendientes() {
-        $db = getConnection();
+        $db = (new Database())->connect();
         $query = $db->prepare("SELECT p.pedido_id, p.fecha_pedido, p.total, p.estado
                                FROM Pedidos p
                                WHERE p.estado = 'pendiente'");

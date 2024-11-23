@@ -138,3 +138,44 @@ document.querySelector('form').addEventListener('submit', function (event) {
   document.getElementById('cart-total-value').value = cartTotal;
 });
 
+
+
+function pasarDatosAlPedido() {
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total').textContent;
+
+  // Serializar los datos del carrito
+  const items = [];
+  cartItems.querySelectorAll('.cart-item').forEach((item) => {
+      const name = item.querySelector('.item-name').textContent;
+      const quantity = item.querySelector('.item-quantity').textContent;
+      const price = item.querySelector('.item-price').textContent;
+
+      items.push({ name, quantity, price });
+  });
+
+  // Crear un formulario dinámico para enviar datos
+  const form = document.createElement('form');
+  form.action = 'index.php?controller=empleado&action=verPedido';
+  form.method = 'POST';
+
+  // Campo oculto con los detalles del carrito
+  const inputCartDetails = document.createElement('input');
+  inputCartDetails.type = 'hidden';
+  inputCartDetails.name = 'cart_details';
+  inputCartDetails.value = JSON.stringify(items);
+
+  // Campo oculto con el total del carrito
+  const inputCartTotal = document.createElement('input');
+  inputCartTotal.type = 'hidden';
+  inputCartTotal.name = 'cart_total';
+  inputCartTotal.value = cartTotal;
+
+  // Añadir campos al formulario
+  form.appendChild(inputCartDetails);
+  form.appendChild(inputCartTotal);
+
+  // Añadir y enviar el formulario
+  document.body.appendChild(form);
+  form.submit();
+}
