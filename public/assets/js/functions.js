@@ -179,3 +179,16 @@ function pasarDatosAlPedido() {
   document.body.appendChild(form);
   form.submit();
 }
+
+function updateDateTime() {
+  const now = new Date();
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+  document.getElementById('current-datetime').textContent = now.toLocaleString('es-ES', options);
+}
+
+setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+checkbox.addEventListener("change", function () {
+  console.log("Checkbox cambiado:", checkbox.checked);
+});

@@ -27,9 +27,9 @@ class EmpleadoController {
         require_once "../app/views/empleado/factura.php";
     }
 
-    public function facturacion() {
-        $pedidoId = $_GET['pedido_id'];
-        require_once "../app/views/empleado/facturacion.php";
+    public function factura() {
+        $productosSeleccionados = $_POST['productos'];
+        require_once "../app/views/empleado/factura.php";
     }
 }
 ?>

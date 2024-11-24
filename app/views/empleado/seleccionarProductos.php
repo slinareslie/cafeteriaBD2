@@ -9,19 +9,7 @@
 
 <body>
     <h1>Selecciona los Productos</h1>
-    <button id="cart-button">
-        🛒 Ver Carrito
-    </button>
-
-    <div id="cart-modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-button" onclick="toggleCart()">×</span>
-            <h2>Carrito de Compras</h2>
-            <div id="cart-items"></div>
-            <p class="total">Total: S/ <span id="cart-total">0.00</span></p>
-            <button id="pasar-datos" onclick="pasarDatosAlPedido()">Ir al Pedido</button>
-        </div>
-    </div>
+    
 
     <div id="products-container">
         <div class="tabs">
@@ -39,7 +27,7 @@
             </select>
         </div>
 
-        <form action="index.php?controller=empleado&action=verPedido" method="POST">
+        <form action="index.php?controller=empleado&action=factura" method="POST">
             <input type="hidden" name="cart_details" id="cart-details">
             <input type="hidden" name="subtotal" id="subtotal">
             <input type="hidden" name="igv" id="igv">
@@ -62,15 +50,72 @@
                     <div class="product-selection">
                         <label>
                             <input type="checkbox" name="productos[]" value="<?php echo $producto['producto_id']; ?>">
-                            Agregar al carrito
+                            Agregar pedido
                         </label>
                     </div>
                 </div>
                 <?php endforeach; ?>
             </div>
-            <button type="submit" class="btn-confirm">Proceder al Pago</button>
+        <div id="cart-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span id="current-datetime"></span>
+                    <span class="close-button" onclick="toggleCart()">×</span>
+                </div>
+                <h2>Pedido Nro 010</h2>
+                <div class="form-row">
+                    <label for="mesa">Mesa:</label>
+                    <select id="mesa">
+                        <option value="1">Mesa 1</option>
+                        <option value="2">Mesa 2</option>
+                        <option value="3">Mesa 3</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="empleado">Atiende:</label>
+                    <select id="empleado">
+                        <option value="1">Empleado 1</option>
+                        <option value="2">Empleado 2</option>
+                        <option value="3">Empleado 3</option>
+                    </select>
+                </div>
+                <div id="cart-items"></div>
+                <p class="total">Total: S/ <span id="cart-total">0.00</span></p>
+                <button type="submit" class="btn-confirm">Proceder al Pago</button>
+            </div>
+            <form action="factura.php" method="POST">
+
+                <input type="hidden" name="mesa" id="hidden-mesa" value="">
+
+                <input type="hidden" name="cart_total_value" id="cart-total-value">
+                <input type="hidden" name="subtotal" id="subtotal">
+                <input type="hidden" name="igv" id="igv">
+                <input type="hidden" name="total" id="total">
+            </form>
+
+            <script> 
+                document.addEventListener("DOMContentLoaded", function () {
+                    const mesaSelect = document.getElementById('mesa'); 
+                    const hiddenMesaInput = document.getElementById('hidden-mesa'); 
+                    if (mesaSelect) {
+                        mesaSelect.addEventListener('change', function () {
+                            hiddenMesaInput.value = mesaSelect.value;
+                        });
+
+                        hiddenMesaInput.value = mesaSelect.value;
+                    }
+                });
+            </script>
+
+        </div>            
+
+            
             <input type="hidden" name="cart_total_value" id="cart-total-value">
         </form>
+
+        <button id="cart-button">
+            Ver Pedido
+        </button>
     </div>
     <script src="../public/assets/js/functions.js"></script>
 </body>
