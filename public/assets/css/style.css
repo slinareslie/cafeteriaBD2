@@ -23,6 +23,212 @@ h1 {
     align-items: center;
 }
 
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.checkbox-label input {
+    margin-left: 10px;
+    
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.billing-section h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.summary-section p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#campos-adicionales {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#campos-adicionales .form-group {
+    margin-bottom: 15px;
+}
+
+#campos-adicionales .form-group input,
+#campos-adicionales .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.billing-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.summary-section {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.summary-section h2 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.summary-section p {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+.summary-section .btn-confirm {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.summary-section .btn-confirm:hover {
+    background-color: #0056b3;
+}
+
+
+.flex-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+#sin-datos-cliente {
+    margin-right: 10px;
+    
+}
+
+.billing-section h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.summary-section p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#campos-adicionales {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#campos-adicionales .form-group {
+    margin-bottom: 15px;
+}
+
+#campos-adicionales .form-group input,
+#campos-adicionales .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
+.billing-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.summary-section {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.summary-section h2 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.summary-section p {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+.summary-section .btn-confirm {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.summary-section .btn-confirm:hover {
+    background-color: #0056b3;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -64,7 +270,7 @@ h1 {
 
 #cart-button {
     margin-bottom: 20px;
-    /* Espacio entre el botón y las pestañas */
+    
     padding: 10px 20px;
     background-color: #6a4e3b;
     color: #fff;
@@ -90,12 +296,135 @@ h1 {
     height: 20px;
 }
 
-/* Ajuste para las pestañas */
+
+.billing-section {
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.billing-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: #3e2723;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.form-group input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline-color: #6a4e3b;
+    border-color: #6a4e3b;
+}
+
+
+.summary-section {
+    background-color: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.summary-section h2 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: #3e2723;
+}
+
+.summary-section p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.summary-section .btn-confirm {
+    background-color: #6a4e3b;
+    color: white;
+    padding: 12px 25px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.summary-section .btn-confirm:hover {
+    background-color: #5a4030;
+}
+
+
+#campos-adicionales {
+    display: none;
+    transition: all 0.3s ease-in-out;
+}
+
+
+#campos-adicionales .form-group {
+    margin-bottom: 15px;
+}
+
+#campos-adicionales input[type="email"],
+#campos-adicionales input[type="text"] {
+    border-color: #ddd;
+    font-size: 1rem;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#campos-adicionales input[type="email"]:focus,
+#campos-adicionales input[type="text"]:focus {
+    outline-color: #6a4e3b;
+    border-color: #6a4e3b;
+}
+
+
+.billing-section h2,
+.summary-section h2 {
+    color: #3e2723;
+    border-bottom: 2px solid #6a4e3b;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+
+.summary-section p span {
+    font-weight: bold;
+    color: #502207;
+}
+
+
 .tabs {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-    /* Espacio adicional entre las pestañas y otros elementos */
+    
     gap: 10px;
 }
 
@@ -369,16 +698,15 @@ h1 {
     background-color: #5a4030;
 }
 
-/*Para facturacion*/
+
 
 .container {
     width: 80%;
     margin: 20px auto;
-    background: white;
-    border: 1px solid #ddd;
+    background: #fff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .form-container {
@@ -460,7 +788,7 @@ h1 {
     background-color: #0056b3;
 }
 
-/*Para pedido*/
+
 .containerP {
     width: 400px;
     margin: 20px auto;

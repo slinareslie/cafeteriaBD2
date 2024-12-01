@@ -132,63 +132,77 @@ document.querySelectorAll(".product-card").forEach((card) => {
 
 document.getElementById("cart-button").addEventListener("click", toggleCart);
 
-
-document.querySelector('form').addEventListener('submit', function (event) {
-  const cartTotal = document.getElementById('cart-total').textContent;
-  document.getElementById('cart-total-value').value = cartTotal;
+document.querySelector("form").addEventListener("submit", function (event) {
+  const cartTotal = document.getElementById("cart-total").textContent;
+  document.getElementById("cart-total-value").value = cartTotal;
 });
 
-
-
 function pasarDatosAlPedido() {
-  const cartItems = document.getElementById('cart-items');
-  const cartTotal = document.getElementById('cart-total').textContent;
-
-  // Serializar los datos del carrito
+  const cartItems = document.getElementById("cart-items");
+  const cartTotal = document.getElementById("cart-total").textContent;
   const items = [];
-  cartItems.querySelectorAll('.cart-item').forEach((item) => {
-      const name = item.querySelector('.item-name').textContent;
-      const quantity = item.querySelector('.item-quantity').textContent;
-      const price = item.querySelector('.item-price').textContent;
+  cartItems.querySelectorAll(".cart-item").forEach((item) => {
+    const name = item.querySelector(".item-name").textContent;
+    const quantity = item.querySelector(".item-quantity").textContent;
+    const price = item.querySelector(".item-price").textContent;
 
-      items.push({ name, quantity, price });
+    items.push({ name, quantity, price });
   });
-
-  // Crear un formulario dinámico para enviar datos
-  const form = document.createElement('form');
-  form.action = 'index.php?controller=empleado&action=verPedido';
-  form.method = 'POST';
-
-  // Campo oculto con los detalles del carrito
-  const inputCartDetails = document.createElement('input');
-  inputCartDetails.type = 'hidden';
-  inputCartDetails.name = 'cart_details';
+  const form = document.createElement("form");
+  form.action = "index.php?controller=empleado&action=verPedido";
+  form.method = "POST";
+  const inputCartDetails = document.createElement("input");
+  inputCartDetails.type = "hidden";
+  inputCartDetails.name = "cart_details";
   inputCartDetails.value = JSON.stringify(items);
-
-  // Campo oculto con el total del carrito
-  const inputCartTotal = document.createElement('input');
-  inputCartTotal.type = 'hidden';
-  inputCartTotal.name = 'cart_total';
+  const inputCartTotal = document.createElement("input");
+  inputCartTotal.type = "hidden";
+  inputCartTotal.name = "cart_total";
   inputCartTotal.value = cartTotal;
-
-  // Añadir campos al formulario
   form.appendChild(inputCartDetails);
   form.appendChild(inputCartTotal);
-
-  // Añadir y enviar el formulario
   document.body.appendChild(form);
   form.submit();
 }
 
 function updateDateTime() {
   const now = new Date();
-  const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-  document.getElementById('current-datetime').textContent = now.toLocaleString('es-ES', options);
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  };
+  document.getElementById("current-datetime").textContent = now.toLocaleString(
+    "es-ES",
+    options
+  );
 }
 
 setInterval(updateDateTime, 1000);
-        updateDateTime();
+updateDateTime();
 
 checkbox.addEventListener("change", function () {
   console.log("Checkbox cambiado:", checkbox.checked);
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const checkbox = document.getElementById("sin-datos-cliente");
+  const camposAdicionales = document.getElementById("campos-adicionales");
+
+  checkbox.addEventListener("change", function () {
+    if (checkbox.checked) {
+      camposAdicionales.style.display = "none";
+    } else {
+      camposAdicionales.style.display = "block";
+    }
+  });
+
+  if (checkbox.checked) {
+    camposAdicionales.style.display = "none";
+  } else {
+    camposAdicionales.style.display = "block";
+  }
 });

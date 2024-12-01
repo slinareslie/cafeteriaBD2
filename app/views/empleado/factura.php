@@ -23,16 +23,16 @@ $total = $subtotal + $igv;
 </head>
 
 <body>
-    <div class="container">        
+    <div class="container">
         <div class="header">
             <span id="current-datetime"><?= $fechaHoraActual ?></span>
-        </div>                      
+        </div>
         <h1>Resumen del Pedido</h1>
-        
+
         <div class="form-container">
             <div class="billing-section">
                 <h2>Datos de Facturación</h2>
-                <div class="form-group">
+                <div class="form-group flex-container">
                     <label>
                         <input type="checkbox" id="sin-datos-cliente" checked>
                         Sin datos del cliente
@@ -59,7 +59,7 @@ $total = $subtotal + $igv;
                         <label for="nro_documento">Nro. de Documento</label>
                         <input type="text" id="nro_documento" name="nro_documento" placeholder="Número de documento"
                             required>
-                    </div>                    
+                    </div>
                     <div id="campos-adicionales" style="display: none;">
                         <div class="form-group">
                             <label for="correo">Correo</label>
@@ -87,37 +87,38 @@ $total = $subtotal + $igv;
                     <button type="submit" class="btn-confirm">Confirmar Pedido</button>
                 </form>
             </div>
+
             <div class="summary-section">
                 <h2>Mesa Seleccionada</h2>
                 <p><strong>Mesa: </strong><?= $mesaSeleccionada ?></p>
                 <h2>Resumen de Pedido</h2>
-                
+
                 <p>SubTotal: <span id="subtotal-display">
-                     <ul>
-                        <?php
+                        <ul>
+                            <?php
                         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $cartTotalValue = $_POST['cart_total_value'] ?? '0.00';
                             echo "S/ " . htmlspecialchars($cartTotalValue);
                         }
                         ?>
-                    </ul>
-                </span></p>
-               
+                        </ul>
+                    </span></p>
+
                 <p>IGV (18%): <span id="igv-display">S/ <?= number_format($igv, 2) ?></span></p>
-                <p>Total: <span id="total-display">S/ <?= number_format($total, 2) ?></span></p>              
-                
+                <p>Total: <span id="total-display">S/ <?= number_format($total, 2) ?></span></p>
+
 
             </div>
         </div>
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const checkbox = document.getElementById("sin-datos-cliente");
         const camposAdicionales = document.getElementById("campos-adicionales");
         const subtotalHidden = document.querySelector("input[name='subtotal']");
         const igvHidden = document.querySelector("input[name='igv']");
         const totalHidden = document.querySelector("input[name='total']");
-        
+
         const subtotalDisplay = document.getElementById("subtotal-display");
         const igvDisplay = document.getElementById("igv-display");
         const totalDisplay = document.getElementById("total-display");
@@ -127,37 +128,30 @@ $total = $subtotal + $igv;
             const igv = subtotal * 0.18;
             const total = subtotal + igv;
 
-            
             igvDisplay.textContent = `S/ ${igv.toFixed(2)}`;
             totalDisplay.textContent = `S/ ${total.toFixed(2)}`;
 
-            
             igvHidden.value = igv.toFixed(2);
             totalHidden.value = total.toFixed(2);
         }
 
         updateValues();
 
-
         subtotalHidden.addEventListener("input", updateValues);
-        checkbox.addEventListener("change", function () {
-                    if (checkbox.checked) {
-                        camposAdicionales.style.display = "none";
-                    } else {
-                        camposAdicionales.style.display = "block";
-                    }
-                });
-
-                if (checkbox.checked) {
-                    camposAdicionales.style.display = "none";
-                } else {
-                    camposAdicionales.style.display = "block";
-                }
-
-
+        checkbox.addEventListener("change", function() {
+            if (checkbox.checked) {
+                camposAdicionales.style.display = "none";
+            } else {
+                camposAdicionales.style.display = "block";
+            }
         });
 
-        
+        if (checkbox.checked) {
+            camposAdicionales.style.display = "none";
+        } else {
+            camposAdicionales.style.display = "block";
+        }
+    });
     </script>
     <script src="../public/assets/js/functions.js"></script>
 </body>
