@@ -9,7 +9,7 @@
 
 <body>
     <h1>Selecciona los Productos</h1>
-    
+
 
     <div id="products-container">
         <div class="tabs">
@@ -56,60 +56,59 @@
                 </div>
                 <?php endforeach; ?>
             </div>
-        <div id="cart-modal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span id="current-datetime"></span>
-                    <span class="close-button" onclick="toggleCart()">×</span>
+            <div id="cart-modal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span id="current-datetime"></span>
+                        <span class="close-button" onclick="toggleCart()">×</span>
+                    </div>
+                    <h2>Pedido Nro 010</h2>
+                    <div class="form-row">
+                        <label for="mesa">Mesa:</label>
+                        <select id="mesa" name="mesa">
+                            <?php foreach ($mesas as $mesa): ?>
+                            <option value="<?php echo $mesa['mesa_id']; ?>">
+                                <?php echo 'Mesa ' . $mesa['mesa_id']; ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="empleado">Atiende:</label>
+                        <select id="empleado" name="empleado">
+                            <?php foreach ($empleados as $empleado): ?>
+                            <option value="<?php echo $empleado['empleado_id']; ?>">
+                                <?php echo htmlspecialchars($empleado['nombre_empleado']); ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div id="cart-items"></div>
+                    <p class="total">Total: S/ <span id="cart-total">0.00</span></p>
+                    <button type="submit" class="btn-confirm">Proceder al Pago</button>
                 </div>
-                <h2>Pedido Nro 010</h2>
-                <div class="form-row">
-                    <label for="mesa">Mesa:</label>
-                    <select id="mesa">
-                        <option value="1">Mesa 1</option>
-                        <option value="2">Mesa 2</option>
-                        <option value="3">Mesa 3</option>
-                    </select>
-                </div>
-                <div class="form-row">
-                    <label for="empleado">Atiende:</label>
-                    <select id="empleado">
-                        <option value="1">Empleado 1</option>
-                        <option value="2">Empleado 2</option>
-                        <option value="3">Empleado 3</option>
-                    </select>
-                </div>
-                <div id="cart-items"></div>
-                <p class="total">Total: S/ <span id="cart-total">0.00</span></p>
-                <button type="submit" class="btn-confirm">Proceder al Pago</button>
-            </div>
-            <form action="factura.php" method="POST">
-
-                <input type="hidden" name="mesa" id="hidden-mesa" value="">
-
-                <input type="hidden" name="cart_total_value" id="cart-total-value">
-                <input type="hidden" name="subtotal" id="subtotal">
-                <input type="hidden" name="igv" id="igv">
-                <input type="hidden" name="total" id="total">
-            </form>
-
-            <script> 
-                document.addEventListener("DOMContentLoaded", function () {
-                    const mesaSelect = document.getElementById('mesa'); 
-                    const hiddenMesaInput = document.getElementById('hidden-mesa'); 
+                <form action="factura.php" method="POST">
+                    <input type="hidden" name="mesa" id="hidden-mesa" value="">
+                    <input type="hidden" name="cart_total_value" id="cart-total-value">
+                    <input type="hidden" name="subtotal" id="subtotal">
+                    <input type="hidden" name="igv" id="igv">
+                    <input type="hidden" name="total" id="total">
+                </form>
+                <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const mesaSelect = document.getElementById('mesa');
+                    const hiddenMesaInput = document.getElementById('hidden-mesa');
                     if (mesaSelect) {
-                        mesaSelect.addEventListener('change', function () {
+                        mesaSelect.addEventListener('change', function() {
                             hiddenMesaInput.value = mesaSelect.value;
                         });
-
                         hiddenMesaInput.value = mesaSelect.value;
                     }
                 });
-            </script>
+                </script>
+            </div>
 
-        </div>            
 
-            
             <input type="hidden" name="cart_total_value" id="cart-total-value">
         </form>
 

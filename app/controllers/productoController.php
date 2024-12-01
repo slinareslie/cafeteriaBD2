@@ -12,6 +12,7 @@ class ProductoController {
 
         require_once "../app/views/producto/list.php";
     }
+    
 
     public function agregarCarrito() {
         session_start();
