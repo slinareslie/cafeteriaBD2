@@ -1,4 +1,5 @@
 <?php
+// Aquí puedes incluir el código PHP para manejar la conexión a la base de datos y generar los reportes.
 ?>
 
 <!DOCTYPE html>
@@ -72,68 +73,75 @@
         background-color: #f2f2f2;
     }
 
-    .report-table tr:nth-child(even) {
-        background-color: #f9f9f9;
+    .no-data {
+        text-align: center;
+        color: red;
+        font-weight: bold;
     }
     </style>
 </head>
 
 <body>
-
     <div class="container">
-        <h1>Generar Reporte de Usuarios</h1>
+        <h1>Reporte de Usuarios</h1>
 
-        <!-- Formulario para filtros (ahora sin la opción de sedes) -->
-        <form id="reportForm">
-            <label for="fecha_inicio">Fecha de Inicio:</label>
-            <input type="date" id="fecha_inicio" name="fecha_inicio">
+        <!-- Formulario para seleccionar las fechas -->
+        <form method="GET" action="reporte.php">
+            <label for="startDate">Fecha de Inicio:</label>
+            <input type="date" id="startDate" name="startDate" required>
 
-            <label for="fecha_fin">Fecha de Fin:</label>
-            <input type="date" id="fecha_fin" name="fecha_fin">
+            <label for="endDate">Fecha de Fin:</label>
+            <input type="date" id="endDate" name="endDate" required>
 
             <button type="submit">Generar Reporte</button>
         </form>
 
-        <!-- Sección para mostrar el reporte -->
         <div class="report-section">
-            <table class="report-table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Fecha de Registro</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (count($usuarios) > 0): ?>
-                    <?php foreach ($usuarios as $usuario): ?>
-                    <tr>
-                        <td><?php echo $usuario['nombre']; ?></td>
-                        <td><?php echo $usuario['email']; ?></td>
-                        <td><?php echo $usuario['fecha_registro']; ?></td>
-                        <td><a href="detalle.php?id=<?php echo $usuario['id']; ?>">Ver Detalles</a></td>
-                    </tr>
-                    <?php endforeach; ?>
-                    <?php else: ?>
-                    <tr>
-                        <td colspan="4">No se encontraron usuarios para el reporte.</td>
-                    </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+            <?php
+            // Lógica para generar el reporte y mostrarlo en la tabla
+            if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['startDate'], $_GET['endDate'])) {
+                $startDate = $_GET['startDate'];
+                $endDate = $_GET['endDate'];
+
+                // Aquí puedes incluir el código para obtener los datos de la base de datos
+                // Dependiendo de la base de datos, por ejemplo:
+                // $users = getUsersByDateRange($startDate, $endDate);
+
+                // Simulación de datos de ejemplo
+                $users = [
+                    ['id' => 1, 'name' => 'Juan Pérez', 'email' => 'juan@example.com', 'registration_date' => '2024-01-15'],
+                    ['id' => 2, 'name' => 'Ana Gómez', 'email' => 'ana@example.com', 'registration_date' => '2024-02-20']
+                ];
+
+                if (count($users) > 0) {
+                    echo '<table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Correo Electrónico</th>
+                                    <th>Fecha de Registro</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+                    
+                    foreach ($users as $user) {
+                        echo '<tr>
+                                <td>' . $user['id'] . '</td>
+                                <td>' . $user['name'] . '</td>
+                                <td>' . $user['email'] . '</td>
+                                <td>' . $user['registration_date'] . '</td>
+                              </tr>';
+                    }
+
+                    echo '</tbody></table>';
+                } else {
+                    echo '<p class="no-data">No se encontraron usuarios para el rango de fechas seleccionado.</p>';
+                }
+            }
+            ?>
         </div>
     </div>
-
-    <script>
-    // Funcionalidad para mostrar el reporte después de generar
-    document.getElementById('reportForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        // Aquí iría la lógica para obtener los datos según las fechas seleccionadas
-        document.querySelector('.report-section').style.display = 'block';
-    });
-    </script>
-
 </body>
 
 </html>
