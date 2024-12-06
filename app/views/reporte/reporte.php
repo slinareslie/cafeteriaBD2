@@ -86,15 +86,26 @@
         <h1>Reporte de Usuarios</h1>
 
         <!-- Formulario para seleccionar las fechas -->
-        <form method="GET" action="reporte.php">
+        <!-- Formulario para seleccionar sede y rango de fechas -->
+
+        <form action="index.php?controller=reporte&action=mostrarReporte" method="POST">
+            <label for="sede">Selecciona una Sede:</label>
+            <select name="sede" id="sede">
+                <!-- Aquí puedes recorrer las sedes con un ciclo -->
+                <?php foreach ($sedes as $sede): ?>
+                <option value="<?php echo $sede['sede_id']; ?>"><?php echo $sede['nombre_sede']; ?></option>
+                <?php endforeach; ?>
+            </select>
+
             <label for="startDate">Fecha de Inicio:</label>
-            <input type="date" id="startDate" name="startDate" required>
+            <input type="date" name="startDate" id="startDate">
 
             <label for="endDate">Fecha de Fin:</label>
-            <input type="date" id="endDate" name="endDate" required>
+            <input type="date" name="endDate" id="endDate">
 
             <button type="submit">Generar Reporte</button>
         </form>
+
 
         <div class="report-section">
             <?php
