@@ -1,5 +1,5 @@
 <?php
-require_once '../models/ReportModel.php';
+require_once '../models/reportModel.php';
 
 class ReportController {
     private $reportModel;

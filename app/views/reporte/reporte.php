@@ -1,10 +1,4 @@
 <?php
-// Incluye el archivo del controlador
-require_once '../controllers/reportController.php';
-
-// Obtener las sedes desde el controlador
-$controller = new ReportController();
-$sedes = $controller->showSedes();
 ?>
 
 <!DOCTYPE html>
@@ -40,8 +34,7 @@ $sedes = $controller->showSedes();
         margin-top: 10px;
     }
 
-    input[type="date"],
-    select {
+    input[type="date"] {
         padding: 8px;
         margin: 5px;
         border: 1px solid #ddd;
@@ -61,7 +54,6 @@ $sedes = $controller->showSedes();
 
     .report-section {
         margin-top: 20px;
-        display: none;
     }
 
     .report-table {
@@ -79,6 +71,10 @@ $sedes = $controller->showSedes();
     .report-table th {
         background-color: #f2f2f2;
     }
+
+    .report-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
     </style>
 </head>
 
@@ -87,92 +83,55 @@ $sedes = $controller->showSedes();
     <div class="container">
         <h1>Generar Reporte de Usuarios</h1>
 
+        <!-- Formulario para filtros (ahora sin la opción de sedes) -->
         <form id="reportForm">
-            <label for="sede">Seleccionar Sede:</label>
-            <select id="sede" name="sede">
-                <option value="">Seleccione una sede</option>
-                <?php foreach ($sedes as $sede): ?>
-                <option value="<?= $sede['sede_id']; ?>"><?= $sede['nombre_sede']; ?></option>
-                <?php endforeach; ?>
-            </select><br><br>
+            <label for="fecha_inicio">Fecha de Inicio:</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio">
 
-            <label for="startDate">Fecha de Inicio:</label>
-            <input type="date" id="startDate" name="startDate" required><br><br>
+            <label for="fecha_fin">Fecha de Fin:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin">
 
-            <label for="endDate">Fecha de Fin:</label>
-            <input type="date" id="endDate" name="endDate" required><br><br>
-
-            <button type="button" onclick="generateReport()">Generar Reporte</button>
+            <button type="submit">Generar Reporte</button>
         </form>
 
-        <div id="reportSection" class="report-section">
-            <h2>Reporte de Clientes por Entrega</h2>
-            <table id="reportTable" class="report-table">
+        <!-- Sección para mostrar el reporte -->
+        <div class="report-section">
+            <table class="report-table">
                 <thead>
                     <tr>
-                        <th>ID Cliente</th>
                         <th>Nombre</th>
                         <th>Email</th>
-                        <th>Fecha Pedido</th>
+                        <th>Fecha de Registro</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Datos del reporte se mostrarán aquí -->
+                    <?php if (count($usuarios) > 0): ?>
+                    <?php foreach ($usuarios as $usuario): ?>
+                    <tr>
+                        <td><?php echo $usuario['nombre']; ?></td>
+                        <td><?php echo $usuario['email']; ?></td>
+                        <td><?php echo $usuario['fecha_registro']; ?></td>
+                        <td><a href="detalle.php?id=<?php echo $usuario['id']; ?>">Ver Detalles</a></td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <tr>
+                        <td colspan="4">No se encontraron usuarios para el reporte.</td>
+                    </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
 
     <script>
-    function generateReport() {
-        const sede = document.getElementById('sede').value;
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-
-        if (!sede || !startDate || !endDate) {
-            alert('Por favor, complete todos los campos.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('sede', sede);
-        formData.append('startDate', startDate);
-        formData.append('endDate', endDate);
-
-        fetch('reportController.php?action=getDeliveryClients', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                const reportSection = document.getElementById('reportSection');
-                const reportTable = document.getElementById('reportTable').getElementsByTagName('tbody')[0];
-
-                // Limpiar tabla antes de mostrar nuevos resultados
-                reportTable.innerHTML = '';
-
-                // Mostrar resultados
-                if (data.length > 0) {
-                    data.forEach(client => {
-                        const row = reportTable.insertRow();
-                        row.innerHTML = `
-                            <td>${client.client_id}</td>
-                            <td>${client.name}</td>
-                            <td>${client.email}</td>
-                            <td>${client.order_date}</td>
-                        `;
-                    });
-                    reportSection.style.display = 'block';
-                } else {
-                    reportSection.style.display = 'none';
-                    alert('No se encontraron clientes para este rango de fechas.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Hubo un error al generar el reporte.');
-            });
-    }
+    // Funcionalidad para mostrar el reporte después de generar
+    document.getElementById('reportForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Aquí iría la lógica para obtener los datos según las fechas seleccionadas
+        document.querySelector('.report-section').style.display = 'block';
+    });
     </script>
 
 </body>
