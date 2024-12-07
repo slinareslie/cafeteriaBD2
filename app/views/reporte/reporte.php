@@ -92,7 +92,7 @@
             <label for="sede">Selecciona una Sede:</label>
             <select name="sede" id="sede">
                 <!-- Aquí puedes recorrer las sedes con un ciclo -->
-                <?php foreach ($sedes as $sede): ?>
+                <?php foreach ($Sedes as $sede): ?>
                 <option value="<?php echo $sede['sede_id']; ?>"><?php echo $sede['nombre_sede']; ?></option>
                 <?php endforeach; ?>
             </select>

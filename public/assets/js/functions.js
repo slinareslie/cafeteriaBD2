@@ -206,3 +206,8 @@ document.addEventListener("DOMContentLoaded", function () {
     camposAdicionales.style.display = "block";
   }
 });
+
+document.querySelector('form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  alert('Reserva realizada con éxito.');
+});
