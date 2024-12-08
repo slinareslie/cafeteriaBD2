@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../public/assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<style>
+    <style>
     #hero {
         background: url('../app/views/img/cafeteria.jpg') no-repeat center center;
         background-size: cover;
@@ -22,7 +22,7 @@
     }
 
     .navbar {
-        height: 100px; 
+        height: 100px;
         transition: background-color 0.3s ease, height 0.3s ease;
     }
 
@@ -32,7 +32,7 @@
 
     .navbar.scrolled {
         background-color: rgba(246, 188, 29, 0.9) !important;
-        height: 80px; 
+        height: 80px;
     }
 
     #hero h1 {
@@ -50,13 +50,12 @@
         background-color: #f8f9fa;
         border-radius: 10px;
     }
-
-</style>
+    </style>
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="d-flex">
                 <ul class="navbar-nav">
@@ -64,11 +63,11 @@
                     <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
                 </ul>
             </div>
-            
+
             <a class="navbar-brand mx-auto" href="#">
                 <img src="../app/views/img/patomar3.png" alt="Patomar Café" style="height: 50px;">
             </a>
-            
+
             <div class="d-flex align-items-center">
                 <ul class="navbar-nav me-3">
                     <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
@@ -80,12 +79,15 @@
 
     <section id="hero">
         <img src="../app/views/img/patomar5.png" alt="Patomar Café" style="height: 20px;">
-        <h1>Nuestra Carta</h1>        
+        <h1>Nuestra Carta</h1>
     </section>
 
     <div id="products-container">
-        <div id="productos" class="container py-5" style="position: relative; background: url('../app/views/img/productos.jpg') no-repeat center center; background-size: cover; color: white;">
-            <h2 class="text-center mb-5" style="background-color: rgba(0, 0, 0, 0.5); display: inline-block; padding: 10px 20px; border-radius: 5px;">Nuestros Productos</h2>
+        <div id="productos" class="container py-5"
+            style="position: relative; background: url('../app/views/img/productos.jpg') no-repeat center center; background-size: cover; color: white;">
+            <h2 class="text-center mb-5"
+                style="background-color: rgba(0, 0, 0, 0.5); display: inline-block; padding: 10px 20px; border-radius: 5px;">
+                Nuestros Productos</h2>
             <div class="row text-center">
                 <div class="col-md-3 mb-4">
                     <div class="product-card position-relative" onclick="showCategory('promociones')">
@@ -123,42 +125,42 @@
         </div>
 
         <style>
-            #productos .product-card {
-                position: relative;
-                overflow: hidden;
-            }
+        #productos .product-card {
+            position: relative;
+            overflow: hidden;
+        }
 
-            #productos img {
-                transition: transform 0.3s;
-            }
+        #productos img {
+            transition: transform 0.3s;
+        }
 
-            #productos .overlay {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(246, 188, 29, 0.9); 
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                opacity: 0; 
-                transition: opacity 0.3s ease;
-            }
+        #productos .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(246, 188, 29, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-            #productos .overlay span {
-                color: #000;
-                font-weight: bold;
-                font-size: 1.2rem;
-            }
+        #productos .overlay span {
+            color: #000;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
 
-            #productos .product-card:hover img {
-                transform: scale(1.1);
-            }
+        #productos .product-card:hover img {
+            transform: scale(1.1);
+        }
 
-            #productos .product-card:hover .overlay {
-                opacity: 1; 
-            }
+        #productos .product-card:hover .overlay {
+            opacity: 1;
+        }
         </style>
 
         <div class="search-sort-container">
@@ -168,7 +170,7 @@
                 <option value="asc">Precio: Menor a Mayor</option>
                 <option value="desc">Precio: Mayor a Menor</option>
             </select>
-        </div>  
+        </div>
 
         <form action="index.php?controller=empleado&action=factura" method="POST">
             <input type="hidden" name="cart_details" id="cart-details">
@@ -186,15 +188,16 @@
                     <p><?php echo htmlspecialchars($producto['descripcion']); ?></p>
                     <p class="price">S/ <?php echo number_format($producto['precio'], 2); ?></p>
                     <div class="quantity-container">
-                    <label for="cantidad-<?php echo $producto['producto_id']; ?>">Cantidad:</label>
-                    <input type="number" id="cantidad-<?php echo $producto['producto_id']; ?>"
-                        class="product-quantity" data-id="<?php echo $producto['producto_id']; ?>"
-                        name="cantidad[<?php echo $producto['producto_id']; ?>]" value="1" min="1">
-                </div>
+                        <label for="cantidad-<?php echo $producto['producto_id']; ?>">Cantidad:</label>
+                        <input type="number" id="cantidad-<?php echo $producto['producto_id']; ?>"
+                            class="product-quantity" data-id="<?php echo $producto['producto_id']; ?>"
+                            name="cantidad[<?php echo $producto['producto_id']; ?>]" value="1" min="1">
+                    </div>
 
                     <div class="product-selection">
                         <label>
-                            <input type="checkbox" class="producto-checkbox" data-id="<?php echo $producto['producto_id']; ?>"
+                            <input type="checkbox" class="producto-checkbox"
+                                data-id="<?php echo $producto['producto_id']; ?>"
                                 data-name="<?php echo htmlspecialchars($producto['nombre_producto']); ?>"
                                 data-price="<?php echo $producto['precio']; ?>">
                             Agregar pedido
@@ -204,10 +207,10 @@
                 <?php endforeach; ?>
             </div>
 
-            
-            <div class="modal fade" id="cart-modal" tabindex="-1"  aria-hidden="true">
+
+            <div class="modal fade" id="cart-modal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div  class="modal-content">
+                    <div class="modal-content">
                         <div class="modal-header">
                             <span id="current-datetime"></span>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -240,8 +243,8 @@
                             <button type="submit" class="btn-confirm">Realizar compra</button>
                         </div>
                     </div>
-                </div>    
-                
+                </div>
+
                 <form action="factura.php" method="POST">
                     <input type="hidden" name="mesa" id="hidden-mesa" value="">
                     <input type="hidden" name="cart_total_value" id="cart-total-value">
@@ -262,7 +265,7 @@
                 });
                 </script>
             </div>
-            
+
             <input type="hidden" name="cart_total_value" id="cart-total-value">
         </form>
 
@@ -271,14 +274,14 @@
         </button>
 
         <script>
-            document.getElementById('cart-button').addEventListener('click', function() {
-                // Abre el modal con id cart-modal
-                var myModal = new bootstrap.Modal(document.getElementById('carrito'));
-                myModal.show();
-            });
+        document.getElementById('cart-button').addEventListener('click', function() {
+            // Abre el modal con id cart-modal
+            var myModal = new bootstrap.Modal(document.getElementById('carrito'));
+            myModal.show();
+        });
         </script>
     </div>
-    
+
     <footer class="bg-dark text-white text-center py-3">
         <p>© 2024 Mi Cafetería. Todos los derechos reservados.</p>
     </footer>
@@ -286,14 +289,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('scroll', function () {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+    document.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
     </script>
 </body>
 

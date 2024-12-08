@@ -11,7 +11,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
-
+error_reporting(0);
 $Sedes = [];
 // Obtener las sedes
 $sql = "SELECT * FROM sedes";
@@ -25,6 +25,7 @@ if ($result->num_rows > 0) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sede_id = $_POST['sede'];
     $fecha_inicio = $_POST['fecha_inicio'];
+    $fecha = $_POST['fecha'];
     $fecha_fin = $_POST['fecha_fin'];
     $accion = $_POST['accion'];
 }
@@ -124,30 +125,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <select name="sede" id="sede" required>
                 <option value="">Seleccione una sede</option>
                 <?php foreach ($Sedes as $sede): ?>
-                <option value="<?php echo $sede['sede_id']; ?>"><?php echo $sede['nombre_sede']; ?></option>
+                <option value="<?php echo $sede['sede_id']; ?>"
+                    <?php echo (isset($_POST['sede']) && $_POST['sede'] == $sede['sede_id']) ? 'selected' : ''; ?>>
+                    <?php echo $sede['nombre_sede']; ?>
+                </option>
                 <?php endforeach; ?>
             </select>
 
+            <!-- Campos de fecha para rangos -->
             <div id="fecha-rango" style="display: none;">
                 <label for="fecha_inicio">Fecha de inicio:</label>
-                <input type="date" name="fecha_inicio" id="fecha_inicio">
+                <input type="date" name="fecha_inicio" id="fecha_inicio"
+                    value="<?php echo isset($_POST['fecha_inicio']) ? $_POST['fecha_inicio'] : ''; ?>">
 
                 <label for="fecha_fin">Fecha de fin:</label>
-                <input type="date" name="fecha_fin" id="fecha_fin">
+                <input type="date" name="fecha_fin" id="fecha_fin"
+                    value="<?php echo isset($_POST['fecha_fin']) ? $_POST['fecha_fin'] : ''; ?>">
             </div>
 
+            <!-- Campo de fecha específica -->
             <div id="fecha-especifica" style="display: none;">
                 <label for="fecha">Fecha específica:</label>
-                <input type="date" name="fecha" id="fecha">
+                <input type="date" name="fecha" id="fecha"
+                    value="<?php echo isset($_POST['fecha']) ? $_POST['fecha'] : ''; ?>">
             </div>
 
+            <!-- Selección del reporte -->
             <label for="accion">Seleccione el reporte:</label>
-            <select name="accion" id="accion" onchange="mostrarCamposFecha()">
-                <option value="1">Reporte 1: Clientes por Delivery</option>
-                <option value="2">Reporte 2: Ranking de Productos Vendidos</option>
-                <option value="3">Reporte 3: Cantidad de Pedidos por Hora</option>
-                <option value="4">Reporte 4: Clientes con Pedidos Mayores a 50 Soles</option>
-                <option value="5">Reporte 5: Monto Total de Ventas por Sede</option>
+            <select name="accion" id="accion" onchange="mostrarCamposFecha()" required>
+                <option value="1" <?php echo (isset($_POST['accion']) && $_POST['accion'] == 1) ? 'selected' : ''; ?>>
+                    Reporte 1: Clientes por Delivery</option>
+                <option value="2" <?php echo (isset($_POST['accion']) && $_POST['accion'] == 2) ? 'selected' : ''; ?>>
+                    Reporte 2: Ranking de Productos Vendidos</option>
+                <option value="3" <?php echo (isset($_POST['accion']) && $_POST['accion'] == 3) ? 'selected' : ''; ?>>
+                    Reporte 3: Cantidad de Pedidos por Hora</option>
+                <option value="4" <?php echo (isset($_POST['accion']) && $_POST['accion'] == 4) ? 'selected' : ''; ?>>
+                    Reporte 4: Clientes con Pedidos Mayores a 50 Soles</option>
+                <option value="5" <?php echo (isset($_POST['accion']) && $_POST['accion'] == 5) ? 'selected' : ''; ?>>
+                    Reporte 5: Monto Total de Ventas por Sede</option>
             </select>
 
             <button type="submit">Generar Reporte</button>
@@ -166,9 +181,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             AND p.tipo_pedido = 'delivery'
             AND p.fecha_pedido BETWEEN ? AND ?
         ";
-        echo "sede_id: " . $sede_id . "\n";
-echo "fecha_inicio: " . $fecha_inicio . "\n";
-echo "fecha_fin: " . $fecha_fin . "\n";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("iss", $sede_id, $fecha_inicio, $fecha_fin);
         $stmt->execute();
@@ -224,67 +236,67 @@ echo "fecha_fin: " . $fecha_fin . "\n";
             SELECT HOUR(p.fecha_pedido) AS hora, COUNT(*) AS total_pedidos
             FROM Pedidos p
             WHERE p.sede_id = ? 
-            AND p.fecha_pedido BETWEEN ? AND ?
+            AND DATE(p.fecha_pedido) = ?
             GROUP BY HOUR(p.fecha_pedido)
             HAVING hora BETWEEN 9 AND 20
             ORDER BY hora
         ";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iss", $sede_id, $fecha_inicio, $fecha_fin);
+        $stmt->bind_param("is", $sede_id, $fecha);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        echo "<div class='report-section'><h2>Cantidad de Pedidos por Hora</h2>";
-        if ($result->num_rows > 0) {
-            echo "<table><tr><th>Hora</th><th>Total Pedidos</th></tr>";
-            for ($i = 9; $i <= 20; $i++) {
-                $found = false;
-                while ($row = $result->fetch_assoc()) {
-                    if ($row['hora'] == $i) {
-                        echo "<tr><td>{$i}-".($i+1)."</td><td>{$row['total_pedidos']}</td></tr>";
-                        $found = true;
-                        break;
-                    }
-                }
-                if (!$found) {
-                    echo "<tr><td>{$i}-".($i+1)."</td><td>0</td></tr>";
-                }
-            }
-            echo "</table>";
-        } else {
-            echo "<p>No se encontraron resultados.</p>";
+        // Crear un array con las horas del día (9 a 20) para asegurarse de que todas estén representadas
+        $horas = range(9, 20);
+        $pedidos_por_hora = [];
+
+        // Llenar el array con los resultados de la base de datos
+        while ($row = $result->fetch_assoc()) {
+            $pedidos_por_hora[$row['hora']] = $row['total_pedidos'];
         }
-        echo "</div>";
+
+        echo "<div class='report-section'><h2>Cantidad de Pedidos por Hora</h2>";
+        echo "<table><tr><th>Hora</th><th>Total Pedidos</th></tr>";
+        
+        // Imprimir los resultados, asegurando que todas las horas estén representadas
+        foreach ($horas as $hora) {
+            $total_pedidos = isset($pedidos_por_hora[$hora]) ? $pedidos_por_hora[$hora] : 0;
+            echo "<tr><td>{$hora}-".($hora + 1)."</td><td>{$total_pedidos}</td></tr>";
+        }
+        
+        echo "</table></div>";
         break;
 
     case '4':
-        // Reporte 4: Clientes con pedidos mayores a 50 Soles
-        $sql = "
-            SELECT c.nombre, c.direccion, c.telefono, p.total
-            FROM Clientes c
-            INNER JOIN Pedidos p ON c.cliente_id = p.cliente_id
-            WHERE p.sede_id = ? 
-            AND p.tipo_pedido = 'mesa' 
-            AND p.fecha_pedido = ? 
-            AND p.total > 50
-        ";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $sede_id, $fecha_inicio);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    
 
-        echo "<div class='report-section'><h2>Clientes con Pedidos Mayores a 50 Soles</h2>";
-        if ($result->num_rows > 0) {
-            echo "<table><tr><th>Nombre</th><th>Dirección</th><th>Teléfono</th><th>Total</th></tr>";
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr><td>{$row['nombre']}</td><td>{$row['direccion']}</td><td>{$row['telefono']}</td><td>{$row['total']}</td></tr>";
-            }
-            echo "</table>";
-        } else {
-            echo "<p>No se encontraron resultados.</p>";
+    $sql = "
+        SELECT c.nombre, c.direccion, c.telefono, p.total
+        FROM Clientes c
+        INNER JOIN Pedidos p ON c.cliente_id = p.cliente_id
+        WHERE p.sede_id = ? 
+        AND p.tipo_pedido = 'local' 
+        AND DATE(p.fecha_pedido) = ?
+        AND p.total > 50
+    ";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("is", $sede_id, $fecha);  // El 'is' indica que los parámetros son un entero y una cadena
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    echo "<div class='report-section'><h2>Clientes con Pedidos Mayores a 50 Soles</h2>";
+    if ($result->num_rows > 0) {
+        echo "<table><tr><th>Nombre</th><th>Dirección</th><th>Teléfono</th><th>Total</th></tr>";
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr><td>{$row['nombre']}</td><td>{$row['direccion']}</td><td>{$row['telefono']}</td><td>{$row['total']}</td></tr>";
         }
-        echo "</div>";
-        break;
+        echo "</table>";
+    } else {
+        echo "<p>No se encontraron resultados.</p>";
+    }
+    echo "</div>";
+    break;
+
 
     case '5':
         // Reporte 5: Monto Total de Ventas por Sede
@@ -336,6 +348,10 @@ function mostrarCamposFecha() {
 
 // Llamar a la función al cargar la página para establecer el estado correcto
 window.onload = mostrarCamposFecha;
+
+document.addEventListener("DOMContentLoaded", function() {
+    mostrarCamposFecha();
+});
 </script>
 
 </html>
