@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Cafetería</title>
+    <title>PATOMAR -CAFE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
@@ -63,14 +63,12 @@
                 <ul class="navbar-nav me-3">                   
                     <li class="nav-item"><a class="nav-link" href="#sedes">Sedes</a></li>
                 </ul>
-                <!-- Formulario para ir al reporte -->
                 <form action="index.php?controller=empleado&action=verReporte" method="POST">
-                    <button type="submit" class="border-0 p-0 bg-transparent">
-                        <img src="../app/views/img/<?php echo htmlspecialchars($imagen); ?>" alt="Ir a Reporte"
-                            class="card-img-top img-fluid rounded">
-                    </button>
+                    <a href="javascript:void(0);" onclick="this.closest('form').submit();" class="text-decoration-none">
+                        <span style="color: #ddd;">Reporte</span>
+                    </a>
                 </form>
-            </div>
+            </div>  
         </div>
     </nav>
 
@@ -106,7 +104,6 @@
                 <div class="col-md-4 mb-4">
                     <div class="card border-0">
                         <?php 
-                        // Switch para seleccionar la imagen según el ID de la sede
                         switch ($sede['sede_id']) {
                             case 1:
                                 $imagen = 'sede-central.jpg';
@@ -118,10 +115,9 @@
                                 $imagen = 'sede-sur.jpg';
                                 break;
                             default:
-                                $imagen = 'default-sede.jpg'; // Imagen por defecto
+                                $imagen = 'default-sede.jpg'; 
                         }
                         ?>
-                        <!-- Hacer la imagen clickeable -->
                         <form action="index.php?controller=empleado&action=seleccionarProductos" method="POST">
                             <button type="submit" name="sede_id" value="<?php echo $sede['sede_id']; ?>" class="border-0 p-0 bg-transparent">
                                 <img src="../app/views/img/<?php echo htmlspecialchars($imagen); ?>" alt="<?php echo htmlspecialchars($sede['nombre_sede']); ?>" class="card-img-top img-fluid rounded">

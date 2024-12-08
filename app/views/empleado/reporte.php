@@ -37,88 +37,143 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes Cafetería</title>
+    <title>REPORTE CAFETERIA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
+        #hero {
+            background: url('../app//views/img/reporte.jpg') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .container {
-        width: 80%;
-        margin: 20px auto;
-        background-color: #fff;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        .navbar {
+            height: 100px; 
+            transition: background-color 0.3s ease, height 0.3s ease;
+        }
 
-    h1 {
-        text-align: center;
-        color: #333;
-    }
+        .navbar-brand img {
+            height: 80px;
+        }
 
-    form {
-        margin-bottom: 20px;
-    }
+        .navbar.scrolled {
+            background-color: rgba(246, 188, 29, 0.9) !important;
+            height: 80px; 
+        }
 
-    label {
-        font-weight: bold;
-    }
+        #hero h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
 
-    input[type="date"],
-    select {
-        padding: 8px;
-        margin: 5px;
-        border: 1px solid #ddd;
-    }
+        #hero p {
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }        
 
-    button {
-        background-color: #007BFF;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-    }
+        
+        .reporte {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    button:hover {
-        background-color: #0056b3;
-    }
+        form {
+            margin-bottom: 20px;
+        }
 
-    .report-section {
-        margin-top: 20px;
-    }
+        label {
+            font-weight: bold;
+        }
 
-    table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        input[type="date"],
+        select {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+        }
 
-    table,
-    th,
-    td {
-        border: 1px solid #ddd;
-    }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
 
-    th,
-    td {
-        padding: 10px;
-        text-align: left;
-    }
+        button:hover {
+            background-color: #0056b3;
+        }
 
-    th {
-        background-color: #f2f2f2;
-    }
+        .report-section {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex">
+                <ul class="navbar-nav">                    
+                    <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
+                </ul>
+            </div>
+            
+            <a class="navbar-brand mx-auto" href="#">
+                <img src="../app//views/img/patomar3.png" alt="Patomar Café" style="height: 50px;">
+            </a>
+            
+            <div class="d-flex align-items-center">
+                <ul class="navbar-nav me-3">                   
+                    <li class="nav-item"><a class="nav-link" href="#sedes">Sedes</a></li>
+                </ul>
+                <form action="index.php?controller=empleado&action=verReporte" method="POST">
+                    <a href="javascript:void(0);" onclick="this.closest('form').submit();" class="text-decoration-none">
+                        <span style="color: #ddd;">Reporte</span>
+                    </a>
+                </form>
+            </div>  
+        </div>
+    </nav>
 
-    <div class="container">
-        <h1>Generar Reportes de Cafetería</h1>
+    <section id="hero">
+        <img src="../app//views/img/patomar5.png" alt="Patomar Café" style="height: 250px;">
+        <h1>Reportes de Cafeteria</h1>        
+    </section>
+    
+    <div class="reporte">        
 
         <form method="POST">
             <label for="sede">Selecciona una sede:</label>
@@ -324,7 +379,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 ?>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 
 <script>

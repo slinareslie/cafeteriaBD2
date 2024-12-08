@@ -207,6 +207,18 @@
                     <div id="cart-items"></div>
                     <p class="total">Total: S/ <span id="cart-total">0.00</span></p>
                     <button type="submit" class="btn-confirm">Proceder al Pago</button>
+                    <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const mesaSelect = document.getElementById('mesa');
+                        const hiddenMesaInput = document.getElementById('hidden-mesa');
+                        if (mesaSelect) {
+                            mesaSelect.addEventListener('change', function() {
+                                hiddenMesaInput.value = mesaSelect.value;
+                            });
+                            hiddenMesaInput.value = mesaSelect.value;
+                        }
+                    });
+                    </script>
                 </div>
                 <form action="factura.php" method="POST">
                     <input type="hidden" name="mesa" id="hidden-mesa" value="">
