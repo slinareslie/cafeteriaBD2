@@ -186,13 +186,17 @@
                     <p><?php echo htmlspecialchars($producto['descripcion']); ?></p>
                     <p class="price">S/ <?php echo number_format($producto['precio'], 2); ?></p>
                     <div class="quantity-container">
-                        <label for="cantidad-<?php echo $producto['producto_id']; ?>">Cantidad:</label>
-                        <input type="number" id="cantidad-<?php echo $producto['producto_id']; ?>"
-                            name="cantidad[<?php echo $producto['producto_id']; ?>]" value="1" min="1">
-                    </div>
+                    <label for="cantidad-<?php echo $producto['producto_id']; ?>">Cantidad:</label>
+                    <input type="number" id="cantidad-<?php echo $producto['producto_id']; ?>"
+                        class="product-quantity" data-id="<?php echo $producto['producto_id']; ?>"
+                        name="cantidad[<?php echo $producto['producto_id']; ?>]" value="1" min="1">
+                </div>
+
                     <div class="product-selection">
                         <label>
-                            <input type="checkbox" name="productos[]" value="<?php echo $producto['producto_id']; ?>">
+                            <input type="checkbox" class="producto-checkbox" data-id="<?php echo $producto['producto_id']; ?>"
+                                data-name="<?php echo htmlspecialchars($producto['nombre_producto']); ?>"
+                                data-price="<?php echo $producto['precio']; ?>">
                             Agregar pedido
                         </label>
                     </div>
