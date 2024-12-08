@@ -82,7 +82,7 @@
 
 
     <section id="hero">
-        <img src="../app//views/img/patomar5.png" alt="Patomar Café" style="height: 250px;">
+        <img src="../app/views/img/patomar5.png" alt="Patomar Café" style="height: 250px;">
         <h1>Bienvenidos a PATOMAR CAFÉ</h1>
         <p>El mejor café para ti.</p>
     </section>

@@ -14,7 +14,7 @@ function filterProducts() {
 
 function showCategory(category) {
   const products = document.querySelectorAll(".product-card");
-
+  
   products.forEach((product) => {
     const productCategory = product.getAttribute("data-category");
     if (productCategory === category || category === "all") {
@@ -32,7 +32,7 @@ function showCategory(category) {
   );
   if (activeTab) {
     activeTab.classList.add("active");
-  }
+  }  
 }
 
 function sortProducts() {
@@ -66,14 +66,11 @@ function toggleCart() {
 }
 
 function addToCart(productId, name, price) {
-  const quantityInput = document.querySelector(`#cantidad-${productId}`);
-  const quantity = parseInt(quantityInput.value) || 1;
-
   if (!cart[productId]) {
-    cart[productId] = { name, price, quantity: 0 };
+    cart[productId] = { name, price, quantity: 1 };
+  } else {
+    cart[productId].quantity += 1;
   }
-
-  cart[productId].quantity += quantity;
   updateCartUI();
 }
 
@@ -86,49 +83,29 @@ function removeFromCart(productId) {
 
 function updateCartUI() {
   const cartItems = document.getElementById("cart-items");
-  const cartTotal = document.getElementById("cart-total");
+  cartItems.innerHTML = '';  // Limpiar el contenido actual
 
-  cartItems.innerHTML = "";
-  let total = 0;
-
-  for (let productId in cart) {
-    const product = cart[productId];
-    const productTotal = product.price * product.quantity;
-    total += productTotal;
-
-    const item = document.createElement("p");
-    item.innerHTML = `${product.name} (x${
-      product.quantity
-    }) - S/ ${productTotal.toFixed(2)}
-      <button onclick="removeFromCart('${productId}')">Eliminar</button>`;
-    cartItems.appendChild(item);
+  for (const [productId, product] of Object.entries(cart)) {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${product.name} - S/${product.price} x ${product.quantity}`;
+    cartItems.appendChild(listItem);
   }
-
-  cartTotal.textContent = total.toFixed(2);
 }
 
-document.querySelectorAll(".product-card").forEach((card) => {
-  const checkbox = card.querySelector("input[type='checkbox']");
-  const productId = checkbox.value;
-  const name = card.querySelector("h3").textContent;
-  const price = parseFloat(card.getAttribute("data-price"));
+document.querySelectorAll('.producto-checkbox').forEach((checkbox) => {
+  checkbox.addEventListener('change', (e) => {
+    const productId = e.target.getAttribute('data-id');
+    const productName = e.target.getAttribute('data-name');
+    const productPrice = parseFloat(e.target.getAttribute('data-price'));
 
-  checkbox.addEventListener("change", (e) => {
     if (e.target.checked) {
-      addToCart(productId, name, price);
+      addToCart(productId, productName, productPrice);
     } else {
       removeFromCart(productId);
     }
   });
-
-  const quantityInput = card.querySelector(`#cantidad-${productId}`);
-  quantityInput.addEventListener("change", (e) => {
-    if (cart[productId]) {
-      cart[productId].quantity = parseInt(e.target.value) || 1;
-      updateCartUI();
-    }
-  });
 });
+
 
 document.getElementById("cart-button").addEventListener("click", toggleCart);
 
@@ -137,33 +114,9 @@ document.querySelector("form").addEventListener("submit", function (event) {
   document.getElementById("cart-total-value").value = cartTotal;
 });
 
-function pasarDatosAlPedido() {
-  const cartItems = document.getElementById("cart-items");
-  const cartTotal = document.getElementById("cart-total").textContent;
-  const items = [];
-  cartItems.querySelectorAll(".cart-item").forEach((item) => {
-    const name = item.querySelector(".item-name").textContent;
-    const quantity = item.querySelector(".item-quantity").textContent;
-    const price = item.querySelector(".item-price").textContent;
 
-    items.push({ name, quantity, price });
-  });
-  const form = document.createElement("form");
-  form.action = "index.php?controller=empleado&action=verPedido";
-  form.method = "POST";
-  const inputCartDetails = document.createElement("input");
-  inputCartDetails.type = "hidden";
-  inputCartDetails.name = "cart_details";
-  inputCartDetails.value = JSON.stringify(items);
-  const inputCartTotal = document.createElement("input");
-  inputCartTotal.type = "hidden";
-  inputCartTotal.name = "cart_total";
-  inputCartTotal.value = cartTotal;
-  form.appendChild(inputCartDetails);
-  form.appendChild(inputCartTotal);
-  document.body.appendChild(form);
-  form.submit();
-}
+
+
 
 function updateDateTime() {
   const now = new Date();
@@ -211,3 +164,4 @@ document.querySelector('form').addEventListener('submit', function(e) {
   e.preventDefault();
   alert('Reserva realizada con éxito.');
 });
+

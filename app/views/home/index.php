@@ -110,7 +110,7 @@
                         <input type="password" class="form-control" id="confirmPassword" placeholder="Repetir contraseña">
                     </div>
                     <div class="d-grid">
-                        <button onclick="event.preventDefault(); window.location.href='index.php?controller=empleado&action=seleccionarSede';" class="btn btn-primary">Empleado</button>
+                        <button onclick="event.preventDefault(); window.location.href='index.php?controller=empleado&action=seleccionarSede';" class="btn ">Empleado</button>
                     </div>
                 </form>
             </div>
