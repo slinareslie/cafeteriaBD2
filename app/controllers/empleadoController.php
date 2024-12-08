@@ -72,5 +72,11 @@ class EmpleadoController {
         $productosSeleccionados = $_POST['productos'];
         require_once "../app/views/empleado/factura.php";
     }
+
+    public function verReporte() {
+    require_once "../app/views/empleado/reporte.php";
+}
+
+
 }
 ?>
