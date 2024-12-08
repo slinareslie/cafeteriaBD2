@@ -128,19 +128,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
             </select>
 
-            <label for="fecha_inicio">Fecha de inicio:</label>
-            <input type="date" name="fecha_inicio" required>
+            <div id="fecha-rango" style="display: none;">
+                <label for="fecha_inicio">Fecha de inicio:</label>
+                <input type="date" name="fecha_inicio" id="fecha_inicio">
 
-            <label for="fecha_fin">Fecha de fin:</label>
-            <input type="date" name="fecha_fin" required>
+                <label for="fecha_fin">Fecha de fin:</label>
+                <input type="date" name="fecha_fin" id="fecha_fin">
+            </div>
+
+            <div id="fecha-especifica" style="display: none;">
+                <label for="fecha">Fecha específica:</label>
+                <input type="date" name="fecha" id="fecha">
+            </div>
 
             <label for="accion">Seleccione el reporte:</label>
-            <select name="accion" required>
-                <option value="1">Listado de clientes por delivery</option>
-                <option value="2">Ranking de productos vendidos</option>
-                <option value="3">Pedidos por hora en mesa</option>
-                <option value="4">Clientes con pedidos mayores a 50 soles</option>
-                <option value="5">Monto total de ventas por sede</option>
+            <select name="accion" id="accion" onchange="mostrarCamposFecha()">
+                <option value="1">Reporte 1: Clientes por Delivery</option>
+                <option value="2">Reporte 2: Ranking de Productos Vendidos</option>
+                <option value="3">Reporte 3: Cantidad de Pedidos por Hora</option>
+                <option value="4">Reporte 4: Clientes con Pedidos Mayores a 50 Soles</option>
+                <option value="5">Reporte 5: Monto Total de Ventas por Sede</option>
             </select>
 
             <button type="submit">Generar Reporte</button>
@@ -307,5 +314,28 @@ echo "fecha_fin: " . $fecha_fin . "\n";
 ?>
 
 </body>
+
+<script>
+// Esta función es llamada tanto al cambiar la opción como al cargar la página
+function mostrarCamposFecha() {
+    const accion = document.getElementById("accion").value;
+    const fechaRango = document.getElementById("fecha-rango");
+    const fechaEspecifica = document.getElementById("fecha-especifica");
+
+    if (accion === "1" || accion === "2" || accion === "5") {
+        fechaRango.style.display = "block"; // Mostrar fechas de inicio y fin
+        fechaEspecifica.style.display = "none"; // Ocultar fecha específica
+    } else if (accion === "3" || accion === "4") {
+        fechaRango.style.display = "none"; // Ocultar fechas de inicio y fin
+        fechaEspecifica.style.display = "block"; // Mostrar fecha específica
+    } else {
+        fechaRango.style.display = "none";
+        fechaEspecifica.style.display = "none";
+    }
+}
+
+// Llamar a la función al cargar la página para establecer el estado correcto
+window.onload = mostrarCamposFecha;
+</script>
 
 </html>
