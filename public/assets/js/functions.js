@@ -14,7 +14,7 @@ function filterProducts() {
 
 function showCategory(category) {
   const products = document.querySelectorAll(".product-card");
-
+  
   products.forEach((product) => {
     const productCategory = product.getAttribute("data-category");
     if (productCategory === category || category === "all") {
@@ -32,7 +32,7 @@ function showCategory(category) {
   );
   if (activeTab) {
     activeTab.classList.add("active");
-  }
+  }  
 }
 
 function sortProducts() {
@@ -211,3 +211,4 @@ document.querySelector('form').addEventListener('submit', function(e) {
   e.preventDefault();
   alert('Reserva realizada con éxito.');
 });
+
