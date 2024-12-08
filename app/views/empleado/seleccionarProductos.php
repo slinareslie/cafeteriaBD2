@@ -46,6 +46,11 @@
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
 
+    .modal-content {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+    }
+
 </style>
 </head>
 
@@ -79,7 +84,7 @@
     </section>
 
     <div id="products-container">
-        <div id="productos" class="container py-5" style="position: relative; background: url('img/productos.jpg') no-repeat center center; background-size: cover; color: white;">
+        <div id="productos" class="container py-5" style="position: relative; background: url('../app/views/img/productos.jpg') no-repeat center center; background-size: cover; color: white;">
             <h2 class="text-center mb-5" style="background-color: rgba(0, 0, 0, 0.5); display: inline-block; padding: 10px 20px; border-radius: 5px;">Nuestros Productos</h2>
             <div class="row text-center">
                 <div class="col-md-3 mb-4">
@@ -196,37 +201,43 @@
             </div>
 
             
-            <div id="cart-modal" class="modal fade" tabindex="-1"  aria-hidden="true">
-                <div id= "carrito" class="modal-content">
-                    <div class="modal-header">
-                        <span id="current-datetime"></span>
-                        <span class="close-button" onclick="toggleCart()">×</span>
+            <div class="modal fade" id="cart-modal" tabindex="-1"  aria-hidden="true">
+                <div class="modal-dialog">
+                    <div  class="modal-content">
+                        <div class="modal-header">
+                            <span id="current-datetime"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <h2>Pedido Nro 010</h2>
+                        <div class="form-row">
+                            <label for="mesa">Mesa:</label>
+                            <select id="mesa" name="mesa">
+                                <?php foreach ($mesas as $mesa): ?>
+                                <option value="<?php echo $mesa['mesa_id']; ?>">
+                                    <?php echo 'Mesa ' . $mesa['mesa_id']; ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <label for="empleado">Atiende:</label>
+                            <select id="empleado" name="empleado">
+                                <?php foreach ($empleados as $empleado): ?>
+                                <option value="<?php echo $empleado['empleado_id']; ?>">
+                                    <?php echo htmlspecialchars($empleado['nombre_empleado']); ?>
+                                </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div id="cart-items"></div>
+                        <p class="total">Total: S/ <span id="cart-total">0.00</span></p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn-confirm">Realizar compra</button>
+                        </div>
                     </div>
-                    <h2>Pedido Nro 010</h2>
-                    <div class="form-row">
-                        <label for="mesa">Mesa:</label>
-                        <select id="mesa" name="mesa">
-                            <?php foreach ($mesas as $mesa): ?>
-                            <option value="<?php echo $mesa['mesa_id']; ?>">
-                                <?php echo 'Mesa ' . $mesa['mesa_id']; ?>
-                            </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <label for="empleado">Atiende:</label>
-                        <select id="empleado" name="empleado">
-                            <?php foreach ($empleados as $empleado): ?>
-                            <option value="<?php echo $empleado['empleado_id']; ?>">
-                                <?php echo htmlspecialchars($empleado['nombre_empleado']); ?>
-                            </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div id="cart-items"></div>
-                    <p class="total">Total: S/ <span id="cart-total">0.00</span></p>
-                    <button type="submit" class="btn-confirm">Proceder al Pago</button>
-                </div>
+                </div>    
+                
                 <form action="factura.php" method="POST">
                     <input type="hidden" name="mesa" id="hidden-mesa" value="">
                     <input type="hidden" name="cart_total_value" id="cart-total-value">
@@ -250,7 +261,11 @@
             
             <input type="hidden" name="cart_total_value" id="cart-total-value">
         </form>
-        <button id="cart-button" class="btn btn-primary">Ver pedido</button> 
+
+        <button id="ver-pedido" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cart-modal">
+            Ver pedido
+        </button>
+
         <script>
             document.getElementById('cart-button').addEventListener('click', function() {
                 // Abre el modal con id cart-modal
@@ -264,6 +279,7 @@
         <p>© 2024 Mi Cafetería. Todos los derechos reservados.</p>
     </footer>
     <script src="../public/assets/js/functions.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('scroll', function () {
