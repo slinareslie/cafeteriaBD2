@@ -59,17 +59,11 @@ function sortProducts() {
 
 let cart = {};
 
-function toggleCart() {
-  const modal = document.getElementById("cart-modal");
-  modal.classList.toggle("hidden");
-  updateCartUI();
-}
-
-function addToCart(productId, name, price) {
+function addToCart(productId, name, price, quantity = 1) {
   if (!cart[productId]) {
-    cart[productId] = { name, price, quantity: 1 };
+    cart[productId] = { name, price, quantity };
   } else {
-    cart[productId].quantity += 1;
+    cart[productId].quantity += quantity;  
   }
   updateCartUI();
 }
@@ -83,13 +77,17 @@ function removeFromCart(productId) {
 
 function updateCartUI() {
   const cartItems = document.getElementById("cart-items");
-  cartItems.innerHTML = '';  // Limpiar el contenido actual
+  cartItems.innerHTML = '';  
 
+  let total = 0;  
   for (const [productId, product] of Object.entries(cart)) {
     const listItem = document.createElement('li');
     listItem.textContent = `${product.name} - S/${product.price} x ${product.quantity}`;
     cartItems.appendChild(listItem);
+    total += product.price * product.quantity; 
   }
+
+  document.getElementById("cart-total").textContent = total.toFixed(2);
 }
 
 document.querySelectorAll('.producto-checkbox').forEach((checkbox) => {
@@ -106,15 +104,30 @@ document.querySelectorAll('.producto-checkbox').forEach((checkbox) => {
   });
 });
 
+document.querySelectorAll('.product-quantity').forEach((input) => {
+  input.addEventListener('input', (e) => {
+    const productId = e.target.getAttribute('data-id');
+    const newQuantity = parseInt(e.target.value);
 
-document.getElementById("cart-button").addEventListener("click", toggleCart);
+    if (newQuantity > 0) {
+      if (cart[productId]) {
+        cart[productId].quantity = newQuantity;
+      }
+      updateCartUI();
+    }
+  });
+});
 
-document.querySelector("form").addEventListener("submit", function (event) {
+document.getElementById("cart-button").addEventListener("click", function() {
+  updateCartUI();  
+  const myModal = new bootstrap.Modal(document.getElementById('cart-modal'));
+  myModal.show();
+});
+
+document.querySelector("form").addEventListener("submit", function(event) {
   const cartTotal = document.getElementById("cart-total").textContent;
   document.getElementById("cart-total-value").value = cartTotal;
 });
-
-
 
 
 
