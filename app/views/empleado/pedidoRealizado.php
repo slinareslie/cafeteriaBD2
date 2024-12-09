@@ -1,22 +1,31 @@
 <?php
+session_start();
 date_default_timezone_set('America/Lima'); 
 $fechaHoraActual = date('d/m/Y H:i:s');
 $mensajeExito = '';
 
-// Verificar si el formulario fue enviado
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recoger datos del formulario
-    $cliente_id = isset($_POST['cliente_id']) ? intval($_POST['cliente_id']) : null;
-    $tipo_pedido = isset($_POST['tipo_pedido']) ? $_POST['tipo_pedido'] : 'local';
-    $mesaSeleccionada = isset($_POST['mesa']) ? intval($_POST['mesa']) : null;
-    $sede_id = isset($_POST['sede_id']) ? intval($_POST['sede_id']) : null;
-    $cartTotalValue = isset($_POST['cart_total_value']) && is_numeric($_POST['cart_total_value']) 
-        ? floatval($_POST['cart_total_value']) 
-        : 0.00;
+// Verificar si hay datos en la sesión
+if (isset($_SESSION['cliente_id'], $_SESSION['tipo_pedido'], $_SESSION['mesa'], $_SESSION['sede_id'], $_SESSION['subtotal'], $_SESSION['igv'], $_SESSION['total'])) {
+    // Recuperar datos de la sesión
+    $cliente_id = $_SESSION['cliente_id'];
+    $tipo_pedido = $_SESSION['tipo_pedido'];
+    $mesaSeleccionada = $_SESSION['mesa'];
+    $sede_id = $_SESSION['sede_id'];
+    $subtotal = $_SESSION['subtotal'];
+    $igv = $_SESSION['igv'];
+    $total = $_SESSION['total'];
 
-    $subtotal = $cartTotalValue; 
-    $igv = $subtotal * 0.18; 
-    $total = $subtotal + $igv;
+    // Datos del cliente (si se envían)
+    $nombre_cliente = isset($_SESSION['nombre_cliente']) ? $_SESSION['nombre_cliente'] : '';
+    $apellidos = isset($_SESSION['apellidos']) ? $_SESSION['apellidos'] : '';
+    $tipo_documento = isset($_SESSION['tipo_documento']) ? $_SESSION['tipo_documento'] : '';
+    $nro_documento = isset($_SESSION['nro_documento']) ? $_SESSION['nro_documento'] : '';
+    $correo = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
+    $telefono = isset($_SESSION['telefono']) ? $_SESSION['telefono'] : '';
+    $direccion = isset($_SESSION['direccion']) ? $_SESSION['direccion'] : '';
+
+    // Recuperar productos de la sesión
+    $productos = isset($_SESSION['productos']) ? $_SESSION['productos'] : [];
 
     // Conectar a la base de datos
     $mysqli = new mysqli("localhost", "root", "", "CafeteriaDB");
@@ -25,25 +34,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Connection failed: " . $mysqli->connect_error);
     }
 
-    // Preparar y ejecutar el procedimiento almacenado para insertar el pedido
+    // Preparar y ejecutar la inserción en la tabla Pedidos
     $stmt = $mysqli->prepare("INSERT INTO Pedidos (cliente_id, tipo_pedido, mesa_numero, sede_id, subtotal, igv, total) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param('issiddd', $cliente_id, $tipo_pedido, $mesaSeleccionada, $sede_id, $subtotal, $igv, $total);
     if ($stmt->execute()) {
         $pedido_id = $mysqli->insert_id; // Obtener el ID del pedido insertado
 
-        // Insertar detalles del pedido (suponiendo que se pasó un array con los productos)
-        $productos = [
-            ['producto_id' => 1, 'cantidad' => 2, 'precio_unitario' => 5.00],
-            ['producto_id' => 2, 'cantidad' => 1, 'precio_unitario' => 3.50]
-        ];
-
+        // Insertar detalles del pedido (productos)
         foreach ($productos as $producto) {
             $stmt = $mysqli->prepare("INSERT INTO Detalle_Pedido (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
             $stmt->bind_param('iiid', $pedido_id, $producto['producto_id'], $producto['cantidad'], $producto['precio_unitario']);
             $stmt->execute();
         }
 
-        // Insertar un comprobante de pago
+        // Insertar comprobante de pago
         $tipo_comprobante = 'boleta';  // O 'factura', según sea el caso
         $serie = 'B001';
         $correlativo = 1;  // Este valor se puede manejar como un contador
@@ -59,6 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Cerrar la conexión
     $mysqli->close();
+
+    // Limpiar la sesión después de procesar el pedido
+    session_unset();
+    session_destroy();
+} else {
+    $mensajeExito = "No se han recibido los datos necesarios.";
 }
 ?>
 
@@ -182,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p><strong>Total: </strong>S/ <?= number_format($total, 2) ?></p>
             </div>
 
-            <a href="../home/index.php" class="btn btn-primary" >Regresar a la Página Principal</a>
+            <a href="../home/index.php" class="btn btn-primary">Regresar a la Página Principal</a>
         </div>
     </div>
 

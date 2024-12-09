@@ -18,6 +18,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $igv = $subtotal * 0.18; 
     $total = $subtotal + $igv;
 
+    // Guardar las variables en la sesión para la siguiente página
+    $_SESSION['cliente_id'] = $cliente_id;
+    $_SESSION['tipo_pedido'] = $tipo_pedido;
+    $_SESSION['mesa'] = $mesaSeleccionada;
+    $_SESSION['sede_id'] = $sede_id;
+    $_SESSION['subtotal'] = $subtotal;
+    $_SESSION['igv'] = $igv;
+    $_SESSION['total'] = $total;
+
+    // Aquí puedes guardar los datos del cliente si los tiene
+    $_SESSION['nombre_cliente'] = isset($_POST['nombre_cliente']) ? $_POST['nombre_cliente'] : '';
+    $_SESSION['apellidos'] = isset($_POST['apellidos']) ? $_POST['apellidos'] : '';
+    $_SESSION['tipo_documento'] = isset($_POST['tipo_documento']) ? $_POST['tipo_documento'] : '';
+    $_SESSION['nro_documento'] = isset($_POST['nro_documento']) ? $_POST['nro_documento'] : '';
+    $_SESSION['correo'] = isset($_POST['correo']) ? $_POST['correo'] : '';
+    $_SESSION['telefono'] = isset($_POST['telefono']) ? $_POST['telefono'] : '';
+    $_SESSION['direccion'] = isset($_POST['direccion']) ? $_POST['direccion'] : '';
+
+    // Aquí puedes guardar los productos si están disponibles en la variable POST
+    $_SESSION['productos'] = isset($_POST['productos']) ? $_POST['productos'] : [];
+
+    // El siguiente código de inserción a la base de datos está comentado, para que no se ejecute.
+    /*
     // Conectar a la base de datos
     $mysqli = new mysqli("localhost", "root", "", "CafeteriaDB");
 
@@ -59,7 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Cerrar la conexión
     $mysqli->close();
+    */
 }
+    // Redirigir a la siguiente página
 ?>
 
 
@@ -74,46 +99,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <title>Facturación</title>
     <style>
-        body {
-            font-family: BlinkMacSystemFont;
-            background-color: #e9aa17;
-            color: #aa4d19;
-            line-height: 1.6;
-            padding: 0px;
-            margin: 0px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        #hero {
-            background: url('../app/views/img/factura.png') no-repeat center center;
-            background-size: cover;
-            font-family: BlinkMacSystemFont;
-            height: 50vh;
-            color: white;
-            width: 100%;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .tabs {
-            position: relative; /* Permite posicionar elementos dentro del contenedor */
-            display: flex;
-            flex-wrap: wrap; /* Permite que los elementos se distribuyan en varias filas si es necesario */
-            justify-content: center; /* Centra las imágenes horizontalmente */
-            align-items: center; /* Centra las imágenes verticalmente */
-            gap: 20px;
-            margin-bottom: 20px;
-            min-height: 150px; /* Aumenta el tamaño mínimo del contenedor */
-            padding: 20px;
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 5);
-            background-size: cover;
-            background-position: center;
-        }
+    body {
+        font-family: BlinkMacSystemFont;
+        background-color: #e9aa17;
+        color: #aa4d19;
+        line-height: 1.6;
+        padding: 0px;
+        margin: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #hero {
+        background: url('../app/views/img/factura.png') no-repeat center center;
+        background-size: cover;
+        font-family: BlinkMacSystemFont;
+        height: 50vh;
+        color: white;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tabs {
+        position: relative;
+        /* Permite posicionar elementos dentro del contenedor */
+        display: flex;
+        flex-wrap: wrap;
+        /* Permite que los elementos se distribuyan en varias filas si es necesario */
+        justify-content: center;
+        /* Centra las imágenes horizontalmente */
+        align-items: center;
+        /* Centra las imágenes verticalmente */
+        gap: 20px;
+        margin-bottom: 20px;
+        min-height: 150px;
+        /* Aumenta el tamaño mínimo del contenedor */
+        padding: 20px;
+        border-radius: 15px;
+        background: rgba(0, 0, 0, 0.5);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 5);
+        background-size: cover;
+        background-position: center;
+    }
     </style>
 </head>
 
@@ -122,11 +154,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="header">
             <span id="current-datetime"><?= $fechaHoraActual ?></span>
         </div>
-        <div class="tabs" style="background: url('../app/views/img/factura.png') no-repeat center center; background-size: cover; padding: 20px; text-align: center; border-radius: 15px;">
-            <h2 class="text-center mb-5" 
+        <div class="tabs"
+            style="background: url('../app/views/img/factura.png') no-repeat center center; background-size: cover; padding: 20px; text-align: center; border-radius: 15px;">
+            <h2 class="text-center mb-5"
                 style="background-color: rgba(255,255, 255, 0.3); color: white; padding: 10px 20px; border-radius: 15px; display: inline-block; margin: 0 auto;">
                 Resumen de Pedido
-            </h2>            
+            </h2>
         </div>
         <div class="form-container">
             <div class="billing-section">
@@ -185,7 +218,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="igv" value="<?= number_format($igv, 2) ?>">
                     <input type="hidden" name="total" id="total-hidden" value="<?= number_format($total, 2) ?>">
                     <input type="hidden" name="mesa" value="<?= $mesaSeleccionada ?>">
-                    <button type="submit" class="btn-confirm"  onclick="window.location.href='../app/views/empleado/pedidoRealizado.php';">Confirmar Pedido</button>
+                    <button type="submit" class="btn-confirm"
+                        onclick="window.location.href='../app/views/empleado/pedidoRealizado.php';">Confirmar
+                        Pedido</button>
                 </form>
             </div>
 

@@ -69,7 +69,6 @@ class EmpleadoController {
     }
 
     public function factura() {
-        $productosSeleccionados = $_POST['productos'];
         require_once "../app/views/empleado/factura.php";
     }
 
