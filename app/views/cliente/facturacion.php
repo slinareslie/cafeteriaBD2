@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Si todo está bien, redirigir a pedidoRealizado.php
         $_SESSION['order_success'] = true;
         session_write_close(); 
-        header("Location: pedidoRealizado.php"); // Asegúrate de que no haya salida antes de esta línea
+        header("Location: pedidoRealizadoCliente.php"); // Asegúrate de que no haya salida antes de esta línea
         exit;
     }
 }
@@ -142,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         Sin datos del cliente
                     </label>
                 </div>
-                <form action="index.php?controller=empleado&action=pedidoRealizado" method="POST">
+                <form action="index.php?controller=cliente&action=pedidoRealizadoCliente" method="POST">
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" name="nombre_cliente" placeholder="Nombre" required>
@@ -185,6 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="tarjeta">Tarjeta</option>
                         </select>
                     </div>
+                    <input type="hidden" name="sede_id" value="<?= $sede_id ?>">
                     <input type="hidden" name="subtotal" value="<?= number_format($subtotal, 2) ?>">
                     <input type="hidden" name="igv" value="<?= number_format($igv, 2) ?>">
                     <input type="hidden" name="total" id="total-hidden" value="<?= number_format($total, 2) ?>">
@@ -205,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function() {
         const checkbox = document.getElementById("sin-datos-cliente");
         const camposAdicionales = document.getElementById("campos-adicionales");
         const subtotalHidden = document.querySelector("input[name='subtotal']");

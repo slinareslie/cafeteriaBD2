@@ -46,50 +46,50 @@ $conn->close();
 </head>
 
 <style>
-    #hero {
-        background: url('../app/views/img/cafeteria.jpg') no-repeat center center;
-        font-family: BlinkMacSystemFont;
-        background-size: cover;
-        height: 50vh;
-        color: white;
-        width: 100vw;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+#hero {
+    background: url('../app/views/img/cafeteria.jpg') no-repeat center center;
+    font-family: BlinkMacSystemFont;
+    background-size: cover;
+    height: 50vh;
+    color: white;
+    width: 100vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-    .navbar {
-        height: 100px;
-        transition: background-color 0.3s ease, height 0.3s ease;
-    }
+.navbar {
+    height: 100px;
+    transition: background-color 0.3s ease, height 0.3s ease;
+}
 
-    .navbar-brand img {
-        height: 80px;
-    }
+.navbar-brand img {
+    height: 80px;
+}
 
-    .navbar.scrolled {
-        background-color: rgba(246, 188, 29, 0.9) !important;
-        height: 80px;
-    }
+.navbar.scrolled {
+    background-color: rgba(246, 188, 29, 0.9) !important;
+    height: 80px;
+}
 
-    #hero h1 {
-        font-size: 4rem;
-        font-weight: bold;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-    }
+#hero h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
 
-    #hero p {
-        font-size: 1.5rem;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    }
+#hero p {
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
 
-    .modal-content {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-    }
-    </style>
+.modal-content {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+</style>
 </head>
 
 
@@ -108,11 +108,11 @@ $conn->close();
 
             <div class="d-flex align-items-center">
                 <ul class="navbar-nav me-3">
-                    <li class="nav-item"><a class="nav-link" href="#products-container">Productos</a></li>                    
+                    <li class="nav-item"><a class="nav-link" href="#products-container">Productos</a></li>
                 </ul>
             </div>
         </div>
-    </nav>    
+    </nav>
 
     <section id="hero">
         <img src="../app/views/img/patomar5.png" alt="Patomar Café" style="height: 20px;">
@@ -120,25 +120,26 @@ $conn->close();
     </section>
 
     <div id="products-container">
-        <div class="tabs" style="background: url('../app/views/img/productos.jpg') no-repeat center center; background-size: cover; padding: 20px; text-align: center; border-radius: 15px;">
-            <h2 class="text-center mb-5" 
+        <div class="tabs"
+            style="background: url('../app/views/img/productos.jpg') no-repeat center center; background-size: cover; padding: 20px; text-align: center; border-radius: 15px;">
+            <h2 class="text-center mb-5"
                 style="background-color: rgba(0, 0, 0, 0.5); color: white; padding: 10px 20px; border-radius: 15px; display: inline-block; margin: 0 auto;">
                 Productos
             </h2>
             <div class="tab-image-container">
-                <img src="../app/views/img/expresso.jpg" alt="Bebidas" class="tab-image"  style="cursor: pointer;">
+                <img src="../app/views/img/expresso.jpg" alt="Bebidas" class="tab-image" style="cursor: pointer;">
                 <div class="overlay" onclick="showCategory('bebidas')">
                     <p>Bebidas</p>
                 </div>
             </div>
             <div class="tab-image-container">
-                <img src="../app/views/img/comidas.jpg" alt="Comidas" class="tab-image"  style="cursor: pointer;">
+                <img src="../app/views/img/comidas.jpg" alt="Comidas" class="tab-image" style="cursor: pointer;">
                 <div class="overlay" onclick="showCategory('comidas')">
                     <p>Comidas</p>
                 </div>
             </div>
             <div class="tab-image-container">
-                <img src="../app/views/img/postres.jpg" alt="Postres" class="tab-image"  style="cursor: pointer;">
+                <img src="../app/views/img/postres.jpg" alt="Postres" class="tab-image" style="cursor: pointer;">
                 <div class="overlay" onclick="showCategory('postres')">
                     <p>Postres</p>
                 </div>
@@ -163,8 +164,9 @@ $conn->close();
             <div class="products-grid" id="products-grid">
                 <?php foreach ($productos as $producto): ?>
                 <div class="product-card" data-name="<?php echo htmlspecialchars($producto['nombre_producto']); ?>"
-                    data-price="<?php echo $producto['precio']; ?>" data-category="<?php echo $producto['categoria']; ?>">
-                    <?php 
+                    data-price="<?php echo $producto['precio']; ?>"
+                    data-category="<?php echo $producto['categoria']; ?>">
+                    <?php  
                     // Switch para seleccionar la imagen según el ID de la sede
                     switch ($producto['producto_id']) {
                         case 1:

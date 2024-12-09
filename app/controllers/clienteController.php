@@ -19,5 +19,9 @@ class ClienteController {
         $productosSeleccionados = $_POST['productos'];
         require_once "../app/views/cliente/facturacion.php";
     }
+    public function pedidoRealizadoCliente(){
+        require_once "../app/views/cliente/pedidoRealizadoCliente.php";
+    }
+
 }
 ?>
