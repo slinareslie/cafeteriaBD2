@@ -13,6 +13,7 @@
     #hero {
         background: url('../app/views/img/cafeteria.jpg') no-repeat center center;
         background-size: cover;
+        font-family: BlinkMacSystemFont;
         height: 50vh;
         color: white;
         width: 100vw;
@@ -52,7 +53,7 @@
         background-color: #f8f9fa;
         border-radius: 10px;
     }
-    </style>
+</style>
 </head>
 
 
@@ -60,8 +61,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="d-flex">
-                <ul class="navbar-nav">
-                    
+                <ul class="navbar-nav">                    
+                    <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
                 </ul>
             </div>
 

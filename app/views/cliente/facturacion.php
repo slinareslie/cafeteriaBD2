@@ -14,12 +14,61 @@ $total = $subtotal + $igv;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <title>Facturación</title>
+    <style>
+        body {
+            font-family: BlinkMacSystemFont;
+            background-color: #e9aa17;
+            color: #aa4d19;
+            line-height: 1.6;
+            padding: 0px;
+            margin: 0px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #hero {
+            background: url('../app/views/img/factura.png') no-repeat center center;
+            font-family: BlinkMacSystemFont;
+            background-size: cover;
+            height: 50vh;
+            color: white;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .tabs {
+            position: relative; /* Permite posicionar elementos dentro del contenedor */
+            display: flex;
+            flex-wrap: wrap; /* Permite que los elementos se distribuyan en varias filas si es necesario */
+            justify-content: center; /* Centra las imágenes horizontalmente */
+            align-items: center; /* Centra las imágenes verticalmente */
+            gap: 20px;
+            margin-bottom: 20px;
+            min-height: 150px; /* Aumenta el tamaño mínimo del contenedor */
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 5);
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Resumen del Pedido</h1>
+    <div class="fact-container">
+        <div class="tabs" style="background: url('../app/views/img/factura.png') no-repeat center center; background-size: cover; padding: 20px; text-align: center; border-radius: 15px;">
+            <h2 class="text-center mb-5" 
+                style="background-color: rgba(255,255, 255, 0.3); color: white; padding: 10px 20px; border-radius: 15px; display: inline-block; margin: 0 auto;">
+                Resumen de Pedido
+            </h2>            
+        </div>
         <div class="form-container">
             <div class="billing-section">
                 <h2>Datos de Facturación</h2>
