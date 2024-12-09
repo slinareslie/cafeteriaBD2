@@ -1,17 +1,68 @@
 <?php
 date_default_timezone_set('America/Lima'); 
 $fechaHoraActual = date('d/m/Y H:i:s');
+$mensajeExito = '';
 
-$mesaSeleccionada = isset($_POST['mesa']) ? htmlspecialchars($_POST['mesa']) : 'No seleccionada';
+// Verificar si el formulario fue enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Recoger datos del formulario
+    $cliente_id = isset($_POST['cliente_id']) ? intval($_POST['cliente_id']) : null;
+    $tipo_pedido = isset($_POST['tipo_pedido']) ? $_POST['tipo_pedido'] : 'local';
+    $mesaSeleccionada = isset($_POST['mesa']) ? intval($_POST['mesa']) : null;
+    $sede_id = isset($_POST['sede_id']) ? intval($_POST['sede_id']) : null;
+    $cartTotalValue = isset($_POST['cart_total_value']) && is_numeric($_POST['cart_total_value']) 
+        ? floatval($_POST['cart_total_value']) 
+        : 0.00;
 
-$cartTotalValue = isset($_POST['cart_total_value']) && is_numeric($_POST['cart_total_value']) 
-    ? floatval($_POST['cart_total_value']) 
-    : 0.00;
+    $subtotal = $cartTotalValue; 
+    $igv = $subtotal * 0.18; 
+    $total = $subtotal + $igv;
 
-$subtotal = $cartTotalValue; 
-$igv = $subtotal * 0.18; 
-$total = $subtotal + $igv; 
+    // Conectar a la base de datos
+    $mysqli = new mysqli("localhost", "root", "", "CafeteriaDB");
+
+    if ($mysqli->connect_error) {
+        die("Connection failed: " . $mysqli->connect_error);
+    }
+
+    // Preparar y ejecutar el procedimiento almacenado para insertar el pedido
+    $stmt = $mysqli->prepare("INSERT INTO Pedidos (cliente_id, tipo_pedido, mesa_numero, sede_id, subtotal, igv, total) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param('issiddd', $cliente_id, $tipo_pedido, $mesaSeleccionada, $sede_id, $subtotal, $igv, $total);
+    if ($stmt->execute()) {
+        $pedido_id = $mysqli->insert_id; // Obtener el ID del pedido insertado
+
+        // Insertar detalles del pedido (suponiendo que se pasó un array con los productos)
+        $productos = [
+            ['producto_id' => 1, 'cantidad' => 2, 'precio_unitario' => 5.00],
+            ['producto_id' => 2, 'cantidad' => 1, 'precio_unitario' => 3.50]
+        ];
+
+        foreach ($productos as $producto) {
+            $stmt = $mysqli->prepare("INSERT INTO Detalle_Pedido (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param('iiid', $pedido_id, $producto['producto_id'], $producto['cantidad'], $producto['precio_unitario']);
+            $stmt->execute();
+        }
+
+        // Insertar un comprobante de pago
+        $tipo_comprobante = 'boleta';  // O 'factura', según sea el caso
+        $serie = 'B001';
+        $correlativo = 1;  // Este valor se puede manejar como un contador
+        $stmt = $mysqli->prepare("INSERT INTO Comprobante_Pago (pedido_id, tipo_comprobante, serie, correlativo, subtotal, igv, total) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param('isssddd', $pedido_id, $tipo_comprobante, $serie, $correlativo, $subtotal, $igv, $total);
+        $stmt->execute();
+
+        // Si todo sale bien, mostrar mensaje de éxito
+        $mensajeExito = "Pedido procesado correctamente.";
+    } else {
+        $mensajeExito = "Error al procesar el pedido: " . $stmt->error;
+    }
+
+    // Cerrar la conexión
+    $mysqli->close();
+}
 ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -38,7 +89,8 @@ $total = $subtotal + $igv;
                         Sin datos del cliente
                     </label>
                 </div>
-                <form action="pasarela_pago.php" method="POST">
+                <!--<form method="POST" action="factura.php">-->
+                <form method="POST" action="">
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" name="nombre_cliente" placeholder="Nombre" required>
@@ -84,6 +136,7 @@ $total = $subtotal + $igv;
                     <input type="hidden" name="subtotal" value="<?= number_format($subtotal, 2) ?>">
                     <input type="hidden" name="igv" value="<?= number_format($igv, 2) ?>">
                     <input type="hidden" name="total" id="total-hidden" value="<?= number_format($total, 2) ?>">
+                    <input type="hidden" name="mesa" value="<?= $mesaSeleccionada ?>">
                     <button type="submit" class="btn-confirm">Confirmar Pedido</button>
                 </form>
             </div>
@@ -92,25 +145,13 @@ $total = $subtotal + $igv;
                 <h2>Mesa Seleccionada</h2>
                 <p><strong>Mesa: </strong><?= $mesaSeleccionada ?></p>
                 <h2>Resumen de Pedido</h2>
-
-                <p>SubTotal: <span id="subtotal-display">
-                        <ul>
-                            <?php
-                        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                            $cartTotalValue = $_POST['cart_total_value'] ?? '0.00';
-                            echo "S/ " . htmlspecialchars($cartTotalValue);
-                        }
-                        ?>
-                        </ul>
-                    </span></p>
-
+                <p>SubTotal: <span id="subtotal-display">S/ <?= number_format($subtotal, 2) ?></span></p>
                 <p>IGV (18%): <span id="igv-display">S/ <?= number_format($igv, 2) ?></span></p>
                 <p>Total: <span id="total-display">S/ <?= number_format($total, 2) ?></span></p>
-
-
             </div>
         </div>
     </div>
+
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const checkbox = document.getElementById("sin-datos-cliente");
