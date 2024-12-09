@@ -1,5 +1,8 @@
 <?php
 session_start(); 
+echo "<pre>";
+print_r($_SESSION); // Mostrar lo que hay en la sesión
+echo "</pre>";
 date_default_timezone_set('America/Lima'); 
 $fechaHoraActual = date('d/m/Y H:i:s');
 $mensajeError = ''; // Variable para manejar el error
@@ -19,37 +22,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subtotal = $cartTotalValue; 
     $igv = $subtotal * 0.18; 
     $total = $subtotal + $igv;
+    
+        
+
+        // Guardar los datos del cliente
+
+                $_SESSION['productos'] = isset($_POST['productos']) ? $_POST['productos'] : [];
 
     // Validación de campos obligatorios
     if (empty($_POST['nombre_cliente']) || empty($_POST['apellidos']) || empty($_POST['nro_documento'])) {
-        $mensajeError = "Por favor, complete todos los campos obligatorios (Nombre, Apellidos, Número de documento).";
-    } else {
-        // Guardar las variables en la sesión
-        $_SESSION['cliente_id'] = $cliente_id;
-        $_SESSION['tipo_pedido'] = $tipo_pedido;
-        $_SESSION['mesa'] = $mesaSeleccionada;
-        $_SESSION['sede_id'] = $sede_id;
-        $_SESSION['subtotal'] = $subtotal;
-        $_SESSION['igv'] = $igv;
-        $_SESSION['total'] = $total;
+    $mensajeError = "Por favor, complete todos los campos obligatorios (Nombre, Apellidos, Número de documento).";
+} else {
+    // Verifica si los datos están siendo recogidos antes de almacenarlos en la sesión
+    echo "<pre>";
+    print_r($_POST);  // Muestra los datos de $_POST para depurar
+    echo "</pre>";
 
-        // Guardar los datos del cliente
-        $_SESSION['nombre_cliente'] = $_POST['nombre_cliente'];
-        $_SESSION['apellidos'] = $_POST['apellidos'];
-        $_SESSION['tipo_documento'] = $_POST['tipo_documento'];
-        $_SESSION['nro_documento'] = $_POST['nro_documento'];
-        $_SESSION['correo'] = $_POST['correo'] ?? '';
-        $_SESSION['telefono'] = $_POST['telefono'] ?? '';
-        $_SESSION['direccion'] = $_POST['direccion'] ?? '';
+    $_SESSION['nombre_cliente'] = $_POST['nombre_cliente'];
+    $_SESSION['apellidos'] = $_POST['apellidos'];
+    $_SESSION['tipo_documento'] = $_POST['tipo_documento'];
+    $_SESSION['nro_documento'] = $_POST['nro_documento'];
+    $_SESSION['correo'] = $_POST['correo'] ?? '';
+    $_SESSION['telefono'] = $_POST['telefono'] ?? '';
+    $_SESSION['direccion'] = $_POST['direccion'] ?? '';
 
-        // Guardar los productos si están disponibles en el formulario
-        $_SESSION['productos'] = isset($_POST['productos']) ? $_POST['productos'] : [];
+    // Guardar los productos si están disponibles en el formulario
+    $_SESSION['productos'] = $_POST['productos'] ?? [];
 
-        // Si todo está bien, redirigir a pedidoRealizado.php
-        $_SESSION['order_success'] = true;
-        header("Location: pedidoRealizado.php");
-        exit;
-    }
+    // Si todo está bien, redirigir a pedidoRealizado.php
+    $_SESSION['order_success'] = true;
+    header("Location: pedidoRealizado.php");
+    exit;
+}
+
 }
 ?>
 

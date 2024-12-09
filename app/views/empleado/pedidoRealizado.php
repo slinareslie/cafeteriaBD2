@@ -1,11 +1,20 @@
 <?php
 session_start();
+if (isset($_SESSION['total'])) {
+    echo "Total: S/ " . number_format($_SESSION['total'], 2);
+    $total = $_SESSION['total'];
+} else {
+    echo "La variable 'total' no está disponible.";
+}
+echo "<pre>";
+print_r($_SESSION); // Mostrar lo que hay en la sesión
+echo "</pre>";
 date_default_timezone_set('America/Lima'); 
 $fechaHoraActual = date('d/m/Y H:i:s');
 $mensajeExito = '';
 
 // Verificar si hay datos en la sesión
-if (isset($_SESSION['cliente_id'], $_SESSION['tipo_pedido'], $_SESSION['mesa'], $_SESSION['sede_id'], $_SESSION['subtotal'], $_SESSION['igv'], $_SESSION['total'])) {
+if (isset($_SESSION['tipo_pedido'], $_SESSION['mesa'], $_SESSION['sede_id'], $_SESSION['subtotal'], $_SESSION['igv'], $_SESSION['total'])) {
     // Recuperar datos de la sesión
     $cliente_id = $_SESSION['cliente_id'];
     $tipo_pedido = $_SESSION['tipo_pedido'];
@@ -70,6 +79,7 @@ if (isset($_SESSION['cliente_id'], $_SESSION['tipo_pedido'], $_SESSION['mesa'], 
 } else {
     $mensajeExito = "No se han recibido los datos necesarios.";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -202,7 +212,7 @@ if (isset($_SESSION['cliente_id'], $_SESSION['tipo_pedido'], $_SESSION['mesa'], 
         setTimeout(() => {
             document.getElementById('loader').classList.add('hidden');
             document.getElementById('content').classList.remove('hidden');
-        }, 3000); // Simulamos que el proceso toma 3 segundos.
+        }, 1000); // Simulamos que el proceso toma 3 segundos.
     });
     </script>
 </body>
