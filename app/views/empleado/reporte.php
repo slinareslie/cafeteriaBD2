@@ -1,19 +1,19 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "CafeteriaDB";
+$servername = "srv1006.hstgr.io";
+$username = "u472469844_est27";
+$password = "#Bd00027";
+$dbname = "u472469844_est27";
 
-// Crear la conexión
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar la conexión
+
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 error_reporting(0);
 $Sedes = [];
-// Obtener las sedes
+
 $sql = "SELECT * FROM sedes";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
@@ -41,133 +41,133 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../public/assets/css/style.css">
     <style>
-        #hero {
-            background: url('../app//views/img/reporte.jpg') no-repeat center center;
-            background-size: cover;
-            font-family: BlinkMacSystemFont;
-            height: 80vh;
-            color: white;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin-top: 0px;
-        }
+    #hero {
+        background: url('../app//views/img/reporte.jpg') no-repeat center center;
+        background-size: cover;
+        font-family: BlinkMacSystemFont;
+        height: 80vh;
+        color: white;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 0px;
+    }
 
-        .navbar {
-            height: 100px; 
-            transition: background-color 0.3s ease, height 0.3s ease;
-        }
+    .navbar {
+        height: 100px;
+        transition: background-color 0.3s ease, height 0.3s ease;
+    }
 
-        .navbar-brand img {
-            height: 80px;
-        }
+    .navbar-brand img {
+        height: 80px;
+    }
 
-        .navbar.scrolled {
-            background-color: rgba(246, 188, 29, 0.9) !important;
-            height: 80px; 
-        }
+    .navbar.scrolled {
+        background-color: rgba(246, 188, 29, 0.9) !important;
+        height: 80px;
+    }
 
-        #hero h1 {
-            font-size: 4rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-        }
+    #hero h1 {
+        font-size: 4rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
 
-        #hero p {
-            font-size: 1.5rem;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }        
+    #hero p {
+        font-size: 1.5rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
 
-        
-        .reporte {
-            width: 80%;
-            height: 100vh;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
 
-        form {
-            margin-bottom: 20px;
-        }
+    .reporte {
+        width: 80%;
+        height: 100vh;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-        label {
-            font-weight: bold;
-        }
+    form {
+        margin-bottom: 20px;
+    }
 
-        input[type="date"],
-        select {
-            padding: 8px;
-            margin: 5px;
-            border: 1px solid #ddd;
-        }
+    label {
+        font-weight: bold;
+    }
 
-        button {
-            background-color: #e6b222;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
+    input[type="date"],
+    select {
+        padding: 8px;
+        margin: 5px;
+        border: 1px solid #ddd;
+    }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+    button {
+        background-color: #e6b222;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
 
-        .report-section {
-            margin-top: 20px;
-        }
+    button:hover {
+        background-color: #0056b3;
+    }
 
-        table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    .report-section {
+        margin-top: 20px;
+    }
 
-        table,
-        th,
-        td {
-            border: 1px solid #ddd;
-        }
+    table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-        }
+    table,
+    th,
+    td {
+        border: 1px solid #ddd;
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
+    th,
+    td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container d-flex justify-content-between align-items-center">     
+        <div class="container d-flex justify-content-between align-items-center">
             <div class="d-flex">
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
                 </ul>
-            </div>       
+            </div>
             <a class="navbar-brand mx-auto" href="#">
                 <img src="../app//views/img/patomar3.png" alt="Patomar Café" style="height: 50px;">
-            </a>          
-           
+            </a>
+
         </div>
     </nav>
 
     <section id="hero">
         <img src="../app//views/img/patomar5.png" alt="Patomar Café" style="height: 250px;">
-        <h1>Reportes de Cafeteria</h1>        
+        <h1>Reportes de Cafeteria</h1>
     </section>
-    
-    <div class="reporte">        
+
+    <div class="reporte">
 
         <form method="POST">
             <label for="sede">Selecciona una sede:</label>
@@ -181,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
             </select>
 
-            <!-- Campos de fecha para rangos -->
+
             <div id="fecha-rango" style="display: none;">
                 <label for="fecha_inicio">Fecha de inicio:</label>
                 <input type="date" name="fecha_inicio" id="fecha_inicio"
@@ -192,14 +192,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     value="<?php echo isset($_POST['fecha_fin']) ? $_POST['fecha_fin'] : ''; ?>">
             </div>
 
-            <!-- Campo de fecha específica -->
+
             <div id="fecha-especifica" style="display: none;">
                 <label for="fecha">Fecha específica:</label>
                 <input type="date" name="fecha" id="fecha"
                     value="<?php echo isset($_POST['fecha']) ? $_POST['fecha'] : ''; ?>">
             </div>
 
-            <!-- Selección del reporte -->
+
             <label for="accion">Seleccione el reporte:</label>
             <select name="accion" id="accion" onchange="mostrarCamposFecha()" required>
                 <option value="1" <?php echo (isset($_POST['accion']) && $_POST['accion'] == 1) ? 'selected' : ''; ?>>
@@ -221,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             switch ($accion) {
     case '1':
-        // Reporte 1: Listado de clientes por delivery
+        
         $sql = "
             SELECT c.nombre, c.direccion, c.telefono, p.fecha_pedido
             FROM Clientes c
@@ -249,7 +249,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         break;
 
     case '2':
-        // Reporte 2: Ranking de productos vendidos
+        
         $sql = "
             SELECT pr.nombre_producto, SUM(dp.cantidad) AS total_vendido
             FROM Pedidos p
@@ -280,7 +280,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         break;
 
     case '3':
-        // Reporte 3: Cantidad de pedidos por hora
+        
         $sql = "
             SELECT HOUR(p.fecha_pedido) AS hora, COUNT(*) AS total_pedidos
             FROM Pedidos p
@@ -295,11 +295,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        // Crear un array con las horas del día (9 a 20) para asegurarse de que todas estén representadas
+        
         $horas = range(9, 20);
         $pedidos_por_hora = [];
 
-        // Llenar el array con los resultados de la base de datos
+        
         while ($row = $result->fetch_assoc()) {
             $pedidos_por_hora[$row['hora']] = $row['total_pedidos'];
         }
@@ -307,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<div class='report-section'><h2>Cantidad de Pedidos por Hora</h2>";
         echo "<table><tr><th>Hora</th><th>Total Pedidos</th></tr>";
         
-        // Imprimir los resultados, asegurando que todas las horas estén representadas
+        
         foreach ($horas as $hora) {
             $total_pedidos = isset($pedidos_por_hora[$hora]) ? $pedidos_por_hora[$hora] : 0;
             echo "<tr><td>{$hora}-".($hora + 1)."</td><td>{$total_pedidos}</td></tr>";
@@ -329,7 +329,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         AND p.total > 50
     ";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("is", $sede_id, $fecha);  // El 'is' indica que los parámetros son un entero y una cadena
+    $stmt->bind_param("is", $sede_id, $fecha);  
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -348,7 +348,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     case '5':
-        // Reporte 5: Monto Total de Ventas por Sede
+        
         $sql = "
             SELECT SUM(p.total) AS monto_total
             FROM Pedidos p
@@ -373,9 +373,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 ?>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('scroll', function () {
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+        document.addEventListener('scroll', function() {
             const navbar = document.querySelector('.navbar');
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
@@ -383,29 +383,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 navbar.classList.remove('scrolled');
             }
         });
-    </script>
+        </script>
 </body>
 
 <script>
-// Esta función es llamada tanto al cambiar la opción como al cargar la página
 function mostrarCamposFecha() {
     const accion = document.getElementById("accion").value;
     const fechaRango = document.getElementById("fecha-rango");
     const fechaEspecifica = document.getElementById("fecha-especifica");
 
     if (accion === "1" || accion === "2" || accion === "5") {
-        fechaRango.style.display = "block"; // Mostrar fechas de inicio y fin
-        fechaEspecifica.style.display = "none"; // Ocultar fecha específica
+        fechaRango.style.display = "block";
+        fechaEspecifica.style.display = "none";
     } else if (accion === "3" || accion === "4") {
-        fechaRango.style.display = "none"; // Ocultar fechas de inicio y fin
-        fechaEspecifica.style.display = "block"; // Mostrar fecha específica
+        fechaRango.style.display = "none";
+        fechaEspecifica.style.display = "block";
     } else {
         fechaRango.style.display = "none";
         fechaEspecifica.style.display = "none";
     }
 }
 
-// Llamar a la función al cargar la página para establecer el estado correcto
+
 window.onload = mostrarCamposFecha;
 
 document.addEventListener("DOMContentLoaded", function() {

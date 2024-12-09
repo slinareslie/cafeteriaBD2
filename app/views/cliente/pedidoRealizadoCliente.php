@@ -5,9 +5,9 @@ date_default_timezone_set('America/Lima');
 $fechaHoraActual = date('d/m/Y H:i:s');
 $mensajeExito = '';
 
-// Verificar si hay datos en la sesión
+
 if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
-    // Recuperar datos de la sesión
+    
     $cliente_id = 2;
     $tipo_pedido = 'delivery';
     $sede_id = $_POST['sede_id'];
@@ -16,7 +16,7 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
     $igv = $_POST['igv'];
     $total = $_POST['total'];
 
-    // Datos del cliente (si se envían)
+    
     $nombre_cliente = isset($_POST['nombre_cliente']) ? $_POST['nombre_cliente'] : '';
     $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : '';
     $tipo_documento = isset($_POST['tipo_documento']) ? $_POST['tipo_documento'] : '';
@@ -25,47 +25,47 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
     $telefono = isset($_POST['telefono']) ? $_POST['telefono'] : '';
     $direccion = isset($_POST['direccion']) ? $_POST['direccion'] : '';
 
-    // Recuperar productos de la sesión
+    
     $productos = isset($_POST['productos']) ? $_POST['productos'] : [];
 
-    // Conectar a la base de datos
-    $mysqli = new mysqli("localhost", "root", "", "CafeteriaDB");
+    
+    $mysqli = new mysqli("srv1006.hstgr.io", "u472469844_est27", "#Bd00027", "u472469844_est27");
 
     if ($mysqli->connect_error) {
         die("Connection failed: " . $mysqli->connect_error);
     }
 
-    // Preparar y ejecutar la inserción en la tabla Pedidos
+    
     $stmt = $mysqli->prepare("INSERT INTO Pedidos (cliente_id, tipo_pedido, mesa_numero, sede_id, subtotal, igv, total) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param('issiddd', $cliente_id, $tipo_pedido, $mesaSeleccionada, $sede_id, $subtotal, $igv, $total);
     if ($stmt->execute()) {
-        $pedido_id = $mysqli->insert_id; // Obtener el ID del pedido insertado
+        $pedido_id = $mysqli->insert_id; 
 
-        // Insertar detalles del pedido (productos)
+        
         foreach ($productos as $producto) {
             $stmt = $mysqli->prepare("INSERT INTO Detalle_Pedido (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
             $stmt->bind_param('iiid', $pedido_id, $producto['producto_id'], $producto['cantidad'], $producto['precio_unitario']);
             $stmt->execute();
         }
 
-        // Insertar comprobante de pago
-        $tipo_comprobante = 'boleta';  // O 'factura', según sea el caso
+        
+        $tipo_comprobante = 'boleta';  
         $serie = 'B001';
-        $correlativo = 1;  // Este valor se puede manejar como un contador
+        $correlativo = 1;  
         $stmt = $mysqli->prepare("INSERT INTO Comprobante_Pago (pedido_id, tipo_comprobante, serie, correlativo, subtotal, igv, total) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param('isssddd', $pedido_id, $tipo_comprobante, $serie, $correlativo, $subtotal, $igv, $total);
         $stmt->execute();
 
-        // Si todo sale bien, mostrar mensaje de éxito
+        
         $mensajeExito = "Pedido procesado correctamente.";
     } else {
         $mensajeExito = "Error al procesar el pedido: " . $stmt->error;
     }
 
-    // Cerrar la conexión
+    
     $mysqli->close();
 
-    // Limpiar la sesión después de procesar el pedido
+    
     session_unset();
     session_destroy();
 } else {
@@ -83,7 +83,6 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
     <title>Confirmación de Pedido</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
-    /* Estilos Generales */
     body {
         font-family: 'Roboto', sans-serif;
         background-color: #f4f4f4;
@@ -108,12 +107,12 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
         display: none;
     }
 
-    /* Animación Cargando */
+
     .loader {
         border: 16px solid #f3f3f3;
-        /* Light grey */
+
         border-top: 16px solid #3498db;
-        /* Blue */
+
         border-radius: 50%;
         width: 50px;
         height: 50px;
@@ -125,7 +124,7 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
         animation: spin 2s linear infinite;
     }
 
-    /* Animación de Giro */
+
     @keyframes spin {
         0% {
             transform: rotate(0deg);
@@ -136,7 +135,7 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
         }
     }
 
-    /* Título y Mensajes */
+
     .title {
         font-size: 24px;
         color: #333;
@@ -179,7 +178,7 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
 
 <body>
     <div class="wrapper">
-        <!-- Animación para la carga del pedido -->
+
         <div id="loader" class="loader">
             <div class="spinner"></div>
         </div>
@@ -199,12 +198,11 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
     </div>
 
     <script>
-    // Mostrar la página después de procesar el pedido
     document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             document.getElementById('loader').classList.add('hidden');
             document.getElementById('content').classList.remove('hidden');
-        }, 1000); // Simulamos que el proceso toma 3 segundos.
+        }, 1000);
     });
     </script>
 </body>

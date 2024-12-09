@@ -1,17 +1,17 @@
 <?php
-session_start(); // Asegúrate de que session_start() esté al principio del archivo
+session_start(); 
 error_reporting(0);
 
-// Asegúrate de que no haya ningún echo, print_r o salida antes de session_start
+
 $sede_id = $_POST['sede_id'];
 date_default_timezone_set('America/Lima'); 
 $fechaHoraActual = date('d/m/Y H:i:s');
-$mensajeError = ''; // Variable para manejar el error
+$mensajeError = ''; 
 $mensajeExito = '';
 
-// Verificar si el formulario fue enviado
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recoger datos del formulario
+    
     $cliente_id = isset($_POST['cliente_id']) ? intval($_POST['cliente_id']) : null;
     $tipo_pedido = isset($_POST['tipo_pedido']) ? $_POST['tipo_pedido'] : 'local';
     $mesaSeleccionada = isset($_POST['mesa']) ? intval($_POST['mesa']) : null;
@@ -24,11 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $igv = $subtotal * 0.18; 
     $total = $subtotal + $igv;
 
-    // Validación de campos obligatorios
+    
     if (empty($_POST['nombre_cliente']) || empty($_POST['apellidos']) || empty($_POST['nro_documento'])) {
 
 
-        // Almacena los datos en la sesión
+        
         $_POST['nombre_cliente'] = $_POST['nombre_cliente'];
         $_POST['apellidos'] = $_POST['apellidos'];
         $_POST['tipo_documento'] = $_POST['tipo_documento'];
@@ -37,22 +37,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_POST['telefono'] = $_POST['telefono'] ?? '';
         $_POST['direccion'] = $_POST['direccion'] ?? '';
 
-        // Guardar los productos si están disponibles en el formulario
+        
         $_POST['productos'] = $_POST['productos'] ?? [];
 
-        // Asegúrate de que los datos están guardados en la sesión
+        
         $_POST['order_success'] = true;
         session_write_close(); 
         $mensajeError = "Por favor, complete todos los campos obligatorios (Nombre, Apellidos, Número de documento).";
     } else {
-        // Verifica si los datos están siendo recogidos antes de almacenarlos en la sesión
-        // Puedes hacer un print_r para depurar lo que estás recibiendo
+        
+        
         
 
-        // Si todo está bien, redirigir a pedidoRealizado.php
+        
         $_SESSION['order_success'] = true;
         session_write_close(); 
-        header("Location: pedidoRealizadoCliente.php"); // Asegúrate de que no haya salida antes de esta línea
+        header("Location: pedidoRealizadoCliente.php"); 
         exit;
     }
 }
@@ -98,18 +98,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     .tabs {
         position: relative;
-        /* Permite posicionar elementos dentro del contenedor */
+
         display: flex;
         flex-wrap: wrap;
-        /* Permite que los elementos se distribuyan en varias filas si es necesario */
+
         justify-content: center;
-        /* Centra las imágenes horizontalmente */
+
         align-items: center;
-        /* Centra las imágenes verticalmente */
+
         gap: 20px;
         margin-bottom: 20px;
         min-height: 150px;
-        /* Aumenta el tamaño mínimo del contenedor */
+
         padding: 20px;
         border-radius: 15px;
         background: rgba(0, 0, 0, 0.5);

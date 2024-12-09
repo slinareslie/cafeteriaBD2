@@ -1,9 +1,9 @@
 <?php
 class Database {
-    private $host = 'localhost';
-    private $db_name = 'CafeteriaDB';
-    private $username = 'root';
-    private $password = '';
+    private $host = 'srv1006.hstgr.io';
+    private $db_name = 'u472469844_est27';
+    private $username = 'u472469844_est27';
+    private $password = '#Bd00027';
     private $conn;
 
     public function connect() {

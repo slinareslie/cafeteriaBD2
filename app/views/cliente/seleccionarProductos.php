@@ -1,14 +1,14 @@
 <?php
 $sede_id = $_POST['sede_id'];
-// Conexión a la base de datos
-$conn = new mysqli('localhost', 'root', '', 'CafeteriaDB');
 
-// Verificar la conexión
+$conn = new mysqli("srv1006.hstgr.io", "u472469844_est27", "#Bd00027", "u472469844_est27");
+
+
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Obtener el último pedido_id
+
 $query = "SELECT MAX(pedido_id) AS ultimo_pedido FROM Pedidos";
 $result = $conn->query($query);
 
@@ -18,10 +18,10 @@ if ($result->num_rows > 0) {
     $ultimo_pedido = $row['ultimo_pedido'];
 }
 
-// Calcular el siguiente pedido_id
+
 $siguiente_pedido = $ultimo_pedido + 1;
 
-$estado = 'pendiente'; // Estado inicial del pedido
+$estado = 'pendiente'; 
 
 $query = "INSERT INTO Pedidos ( estado) VALUES ( '$estado')";
 if ($conn->query($query) === TRUE) {
@@ -73,14 +73,17 @@ $conn->close();
     background-color: rgba(246, 188, 29, 0.9) !important;
     height: 80px;
 }
+
 .nav-link {
-    color: #ffffff; /* Cambia el color al que prefieras */
+    color: #ffffff;
+
     font-weight: bold;
 }
 
 .nav-link:hover {
-    color: #954321; /* Cambia el color al que prefieras */
-    
+    color: #954321;
+
+
 }
 
 #hero h1 {
@@ -176,7 +179,7 @@ $conn->close();
                     data-price="<?php echo $producto['precio']; ?>"
                     data-category="<?php echo $producto['categoria']; ?>">
                     <?php  
-                    // Switch para seleccionar la imagen según el ID de la sede
+                    
                     switch ($producto['producto_id']) {
                         case 1:
                             $imagen = 'prod1.jpg';

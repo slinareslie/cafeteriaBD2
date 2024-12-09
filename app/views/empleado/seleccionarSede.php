@@ -36,14 +36,15 @@
     }
 
     .nav-link {
-        color: #ffffff; /* Cambia el color al que prefieras */
+        color: #ffffff;
         font-weight: bold;
     }
 
     .nav-link:hover {
-        color: #954321; /* Cambia el color al que prefieras */
-        
-}
+        color: #954321;
+
+
+    }
 
     #hero h1 {
         font-size: 4rem;
