@@ -101,29 +101,23 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         width: 400px;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
     }
 
     .hidden {
         display: none;
     }
 
-
     .loader {
         border: 16px solid #f3f3f3;
-
         border-top: 16px solid #3498db;
-
         border-radius: 50%;
         width: 50px;
         height: 50px;
         animation: spin 2s linear infinite;
         margin: 0 auto;
     }
-
-    .spinner {
-        animation: spin 2s linear infinite;
-    }
-
 
     @keyframes spin {
         0% {
@@ -135,43 +129,53 @@ if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
         }
     }
 
-
     .title {
-        font-size: 24px;
-        color: #333;
+        font-size: 28px;
+        color: #34495e;
         margin: 20px 0;
+        font-weight: 500;
     }
 
     .message {
         font-size: 18px;
         color: #27ae60;
         margin: 10px 0;
+        font-weight: 400;
     }
 
     .factura {
         margin: 20px 0;
-        padding: 10px;
+        padding: 15px;
         background-color: #ecf0f1;
         border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .factura h2 {
         margin-bottom: 10px;
         color: #34495e;
+        font-weight: 500;
     }
 
     .btn {
         text-decoration: none;
-        padding: 10px 20px;
-        background-color: #3498db;
+        padding: 12px 25px;
+        background-color: #F6BC1D;
         color: white;
         border-radius: 5px;
         font-size: 16px;
-        transition: background-color 0.3s ease;
+        font-weight: 500;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin-top: 20px;
     }
 
     .btn:hover {
         background-color: #2980b9;
+        transform: scale(1.05);
+    }
+
+    .btn:active {
+        transform: scale(0.98);
     }
     </style>
 </head>

@@ -23,7 +23,6 @@ $siguiente_pedido = $ultimo_pedido + 1;
 
 $estado = 'pendiente'; 
 
-$query = "INSERT INTO Pedidos ( estado) VALUES ( '$estado')";
 if ($conn->query($query) === TRUE) {
 } else {
     echo "Error: " . $conn->error;

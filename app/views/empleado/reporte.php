@@ -1,20 +1,13 @@
 <?php
-$servername = "srv1006.hstgr.io";
-$username = "u472469844_est27";
-$password = "#Bd00027";
-$dbname = "u472469844_est27";
 
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
+$conn = new mysqli("srv1006.hstgr.io", "u472469844_est27", "#Bd00027", "u472469844_est27");
 
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 error_reporting(0);
 $Sedes = [];
-
-$sql = "SELECT * FROM sedes";
+$sql = "SELECT * FROM Sedes";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
@@ -181,7 +174,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endforeach; ?>
             </select>
 
-
             <div id="fecha-rango" style="display: none;">
                 <label for="fecha_inicio">Fecha de inicio:</label>
                 <input type="date" name="fecha_inicio" id="fecha_inicio"
@@ -192,13 +184,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     value="<?php echo isset($_POST['fecha_fin']) ? $_POST['fecha_fin'] : ''; ?>">
             </div>
 
-
             <div id="fecha-especifica" style="display: none;">
                 <label for="fecha">Fecha específica:</label>
                 <input type="date" name="fecha" id="fecha"
                     value="<?php echo isset($_POST['fecha']) ? $_POST['fecha'] : ''; ?>">
             </div>
-
 
             <label for="accion">Seleccione el reporte:</label>
             <select name="accion" id="accion" onchange="mostrarCamposFecha()" required>
@@ -221,7 +211,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             switch ($accion) {
     case '1':
-        
         $sql = "
             SELECT c.nombre, c.direccion, c.telefono, p.fecha_pedido
             FROM Clientes c
@@ -249,7 +238,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         break;
 
     case '2':
-        
         $sql = "
             SELECT pr.nombre_producto, SUM(dp.cantidad) AS total_vendido
             FROM Pedidos p
@@ -280,7 +268,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         break;
 
     case '3':
-        
         $sql = "
             SELECT HOUR(p.fecha_pedido) AS hora, COUNT(*) AS total_pedidos
             FROM Pedidos p
@@ -295,18 +282,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        
         $horas = range(9, 20);
         $pedidos_por_hora = [];
 
-        
         while ($row = $result->fetch_assoc()) {
             $pedidos_por_hora[$row['hora']] = $row['total_pedidos'];
         }
 
         echo "<div class='report-section'><h2>Cantidad de Pedidos por Hora</h2>";
         echo "<table><tr><th>Hora</th><th>Total Pedidos</th></tr>";
-        
         
         foreach ($horas as $hora) {
             $total_pedidos = isset($pedidos_por_hora[$hora]) ? $pedidos_por_hora[$hora] : 0;
@@ -329,7 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         AND p.total > 50
     ";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("is", $sede_id, $fecha);  
+    $stmt->bind_param("is", $sede_id, $fecha); 
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -348,7 +332,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     case '5':
-        
         $sql = "
             SELECT SUM(p.total) AS monto_total
             FROM Pedidos p
@@ -403,7 +386,6 @@ function mostrarCamposFecha() {
         fechaEspecifica.style.display = "none";
     }
 }
-
 
 window.onload = mostrarCamposFecha;
 
