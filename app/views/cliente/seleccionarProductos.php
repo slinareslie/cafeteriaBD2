@@ -25,7 +25,6 @@ $estado = 'pendiente';
 
 $query = "INSERT INTO Pedidos ( estado) VALUES ( '$estado')";
 if ($conn->query($query) === TRUE) {
-    echo "Pedido registrado exitosamente.";
 } else {
     echo "Error: " . $conn->error;
 }
