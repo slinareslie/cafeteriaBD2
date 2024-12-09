@@ -39,17 +39,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>REPORTE CAFETERIA</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/assets/css/style.css">
     <style>
         #hero {
             background: url('../app//views/img/reporte.jpg') no-repeat center center;
             background-size: cover;
-            height: 100vh;
+            font-family: BlinkMacSystemFont;
+            height: 80vh;
             color: white;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            width: 100%;
+            margin-top: 0px;
         }
 
         .navbar {
@@ -80,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         .reporte {
             width: 80%;
+            height: 100vh;
             margin: 20px auto;
             background-color: #fff;
             padding: 20px;
@@ -102,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         button {
-            background-color: #007BFF;
+            background-color: #e6b222;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -144,27 +149,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container d-flex justify-content-between align-items-center">
+        <div class="container d-flex justify-content-between align-items-center">     
             <div class="d-flex">
-                <ul class="navbar-nav">                    
-                    <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
                 </ul>
-            </div>
-            
+            </div>       
             <a class="navbar-brand mx-auto" href="#">
                 <img src="../app//views/img/patomar3.png" alt="Patomar Café" style="height: 50px;">
-            </a>
-            
-            <div class="d-flex align-items-center">
-                <ul class="navbar-nav me-3">                   
-                    <li class="nav-item"><a class="nav-link" href="#sedes">Sedes</a></li>
-                </ul>
-                <form action="index.php?controller=empleado&action=verReporte" method="POST">
-                    <a href="javascript:void(0);" onclick="this.closest('form').submit();" class="text-decoration-none">
-                        <span style="color: #ddd;">Reporte</span>
-                    </a>
-                </form>
-            </div>  
+            </a>          
+           
         </div>
     </nav>
 

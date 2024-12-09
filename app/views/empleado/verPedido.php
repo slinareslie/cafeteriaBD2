@@ -16,7 +16,7 @@ $cartTotal = isset($_POST['cart_total']) ? $_POST['cart_total'] : '0.00';
 <body>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: BlinkMacSystemFont;
             margin: 0;
             padding: 0;
             background-color: #f5f5f5;

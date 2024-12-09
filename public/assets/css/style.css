@@ -1,5 +1,5 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: BlinkMacSystemFont;
     background-color: #f7f1e3;
     color: #4b382a;
     line-height: 1.6;
@@ -771,7 +771,7 @@ h1 {
 
 
 
-.container {
+.fact-container {
     width: 80%;
     margin: 20px auto;
     background: #fff;
