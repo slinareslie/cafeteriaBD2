@@ -116,7 +116,7 @@ $total = $subtotal + $igv;
                     <input type="hidden" name="subtotal" value="<?= number_format($subtotal, 2) ?>">
                     <input type="hidden" name="igv" value="<?= number_format($igv, 2) ?>">
                     <input type="hidden" name="total" id="total-hidden" value="<?= number_format($total, 2) ?>">
-                    <button type="submit" class="btn-confirm">Confirmar Pedido</button>
+                    <button type="submit" class="btn-confirm"  onclick="window.location.href='../app/views/empleado/pedidoRealizado.php';">Confirmar Pedido</button>
                 </form>
             </div>
             <div class="summary-section">

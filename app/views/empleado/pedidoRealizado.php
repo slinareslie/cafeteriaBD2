@@ -149,7 +149,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         color: #34495e;
     }
 
-    /* Botón Principal */
     .btn {
         text-decoration: none;
         padding: 10px 20px;
@@ -183,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p><strong>Total: </strong>S/ <?= number_format($total, 2) ?></p>
             </div>
 
-            <a href="index.php" class="btn btn-primary">Regresar a la Página Principal</a>
+            <a href="../home/index.php" class="btn btn-primary" >Regresar a la Página Principal</a>
         </div>
     </div>
 

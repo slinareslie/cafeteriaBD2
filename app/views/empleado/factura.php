@@ -185,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="igv" value="<?= number_format($igv, 2) ?>">
                     <input type="hidden" name="total" id="total-hidden" value="<?= number_format($total, 2) ?>">
                     <input type="hidden" name="mesa" value="<?= $mesaSeleccionada ?>">
-                    <button type="submit" class="btn-confirm">Confirmar Pedido</button>
+                    <button type="submit" class="btn-confirm"  onclick="window.location.href='../app/views/empleado/pedidoRealizado.php';">Confirmar Pedido</button>
                 </form>
             </div>
 
