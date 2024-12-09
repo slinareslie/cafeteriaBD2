@@ -1,6 +1,8 @@
 <?php
+session_start(); 
 date_default_timezone_set('America/Lima'); 
 $fechaHoraActual = date('d/m/Y H:i:s');
+$mensajeError = ''; // Variable para manejar el error
 $mensajeExito = '';
 
 // Verificar si el formulario fue enviado
@@ -18,73 +20,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $igv = $subtotal * 0.18; 
     $total = $subtotal + $igv;
 
-    // Guardar las variables en la sesión para la siguiente página
-    $_SESSION['cliente_id'] = $cliente_id;
-    $_SESSION['tipo_pedido'] = $tipo_pedido;
-    $_SESSION['mesa'] = $mesaSeleccionada;
-    $_SESSION['sede_id'] = $sede_id;
-    $_SESSION['subtotal'] = $subtotal;
-    $_SESSION['igv'] = $igv;
-    $_SESSION['total'] = $total;
-
-    // Aquí puedes guardar los datos del cliente si los tiene
-    $_SESSION['nombre_cliente'] = isset($_POST['nombre_cliente']) ? $_POST['nombre_cliente'] : '';
-    $_SESSION['apellidos'] = isset($_POST['apellidos']) ? $_POST['apellidos'] : '';
-    $_SESSION['tipo_documento'] = isset($_POST['tipo_documento']) ? $_POST['tipo_documento'] : '';
-    $_SESSION['nro_documento'] = isset($_POST['nro_documento']) ? $_POST['nro_documento'] : '';
-    $_SESSION['correo'] = isset($_POST['correo']) ? $_POST['correo'] : '';
-    $_SESSION['telefono'] = isset($_POST['telefono']) ? $_POST['telefono'] : '';
-    $_SESSION['direccion'] = isset($_POST['direccion']) ? $_POST['direccion'] : '';
-
-    // Aquí puedes guardar los productos si están disponibles en la variable POST
-    $_SESSION['productos'] = isset($_POST['productos']) ? $_POST['productos'] : [];
-
-    // El siguiente código de inserción a la base de datos está comentado, para que no se ejecute.
-    /*
-    // Conectar a la base de datos
-    $mysqli = new mysqli("localhost", "root", "", "CafeteriaDB");
-
-    if ($mysqli->connect_error) {
-        die("Connection failed: " . $mysqli->connect_error);
-    }
-
-    // Preparar y ejecutar el procedimiento almacenado para insertar el pedido
-    $stmt = $mysqli->prepare("INSERT INTO Pedidos (cliente_id, tipo_pedido, mesa_numero, sede_id, subtotal, igv, total) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param('issiddd', $cliente_id, $tipo_pedido, $mesaSeleccionada, $sede_id, $subtotal, $igv, $total);
-    if ($stmt->execute()) {
-        $pedido_id = $mysqli->insert_id; // Obtener el ID del pedido insertado
-
-        // Insertar detalles del pedido (suponiendo que se pasó un array con los productos)
-        $productos = [
-            ['producto_id' => 1, 'cantidad' => 2, 'precio_unitario' => 5.00],
-            ['producto_id' => 2, 'cantidad' => 1, 'precio_unitario' => 3.50]
-        ];
-
-        foreach ($productos as $producto) {
-            $stmt = $mysqli->prepare("INSERT INTO Detalle_Pedido (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param('iiid', $pedido_id, $producto['producto_id'], $producto['cantidad'], $producto['precio_unitario']);
-            $stmt->execute();
-        }
-
-        // Insertar un comprobante de pago
-        $tipo_comprobante = 'boleta';  // O 'factura', según sea el caso
-        $serie = 'B001';
-        $correlativo = 1;  // Este valor se puede manejar como un contador
-        $stmt = $mysqli->prepare("INSERT INTO Comprobante_Pago (pedido_id, tipo_comprobante, serie, correlativo, subtotal, igv, total) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param('isssddd', $pedido_id, $tipo_comprobante, $serie, $correlativo, $subtotal, $igv, $total);
-        $stmt->execute();
-
-        // Si todo sale bien, mostrar mensaje de éxito
-        $mensajeExito = "Pedido procesado correctamente.";
+    // Validación de campos obligatorios
+    if (empty($_POST['nombre_cliente']) || empty($_POST['apellidos']) || empty($_POST['nro_documento'])) {
+        $mensajeError = "Por favor, complete todos los campos obligatorios (Nombre, Apellidos, Número de documento).";
     } else {
-        $mensajeExito = "Error al procesar el pedido: " . $stmt->error;
-    }
+        // Guardar las variables en la sesión
+        $_SESSION['cliente_id'] = $cliente_id;
+        $_SESSION['tipo_pedido'] = $tipo_pedido;
+        $_SESSION['mesa'] = $mesaSeleccionada;
+        $_SESSION['sede_id'] = $sede_id;
+        $_SESSION['subtotal'] = $subtotal;
+        $_SESSION['igv'] = $igv;
+        $_SESSION['total'] = $total;
 
-    // Cerrar la conexión
-    $mysqli->close();
-    */
+        // Guardar los datos del cliente
+        $_SESSION['nombre_cliente'] = $_POST['nombre_cliente'];
+        $_SESSION['apellidos'] = $_POST['apellidos'];
+        $_SESSION['tipo_documento'] = $_POST['tipo_documento'];
+        $_SESSION['nro_documento'] = $_POST['nro_documento'];
+        $_SESSION['correo'] = $_POST['correo'] ?? '';
+        $_SESSION['telefono'] = $_POST['telefono'] ?? '';
+        $_SESSION['direccion'] = $_POST['direccion'] ?? '';
+
+        // Guardar los productos si están disponibles en el formulario
+        $_SESSION['productos'] = isset($_POST['productos']) ? $_POST['productos'] : [];
+
+        // Si todo está bien, redirigir a pedidoRealizado.php
+        $_SESSION['order_success'] = true;
+        header("Location: pedidoRealizado.php");
+        exit;
+    }
 }
-    // Redirigir a la siguiente página
 ?>
 
 
@@ -164,14 +130,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-container">
             <div class="billing-section">
                 <h2>Datos de Facturación</h2>
+                <?php if ($mensajeError): ?>
+                <div class="alert alert-danger"><?= $mensajeError ?></div>
+                <?php endif; ?>
                 <div class="form-group flex-container">
                     <label>
-                        <input type="checkbox" id="sin-datos-cliente" checked>
+                        <input type="checkbox" id="sin-datos-cliente" onclick="toggleCamposAdicionales()">
                         Sin datos del cliente
                     </label>
                 </div>
-                <!--<form method="POST" action="factura.php">-->
-                <form method="POST" action="">
+                <form action="index.php?controller=empleado&action=pedidoRealizado" method="POST">
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" name="nombre_cliente" placeholder="Nombre" required>
@@ -218,9 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="igv" value="<?= number_format($igv, 2) ?>">
                     <input type="hidden" name="total" id="total-hidden" value="<?= number_format($total, 2) ?>">
                     <input type="hidden" name="mesa" value="<?= $mesaSeleccionada ?>">
-                    <button type="submit" class="btn-confirm"
-                        onclick="window.location.href='../app/views/empleado/pedidoRealizado.php';">Confirmar
-                        Pedido</button>
+                    <button type="submit" class="btn-confirm">Confirmar Pedido</button>
                 </form>
             </div>
 

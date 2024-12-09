@@ -75,5 +75,8 @@ class EmpleadoController {
     public function verReporte() {
         require_once "../app/views/empleado/reporte.php";
     }
+    public function pedidoRealizado(){
+        require_once "../app/views/empleado/pedidoRealizado.php";
+    }
 }
 ?>
