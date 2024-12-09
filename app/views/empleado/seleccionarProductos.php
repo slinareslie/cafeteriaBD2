@@ -1,5 +1,36 @@
 <?php
 $sede_id = $_POST['sede_id'];
+// Conexión a la base de datos
+$conn = new mysqli('localhost', 'root', '', 'CafeteriaDB');
+
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Obtener el último pedido_id
+$query = "SELECT MAX(pedido_id) AS ultimo_pedido FROM Pedidos";
+$result = $conn->query($query);
+
+$ultimo_pedido = 0;
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $ultimo_pedido = $row['ultimo_pedido'];
+}
+
+// Calcular el siguiente pedido_id
+$siguiente_pedido = $ultimo_pedido + 1;
+
+$estado = 'pendiente'; // Estado inicial del pedido
+
+$query = "INSERT INTO Pedidos ( estado) VALUES ( '$estado')";
+if ($conn->query($query) === TRUE) {
+    echo "Pedido registrado exitosamente.";
+} else {
+    echo "Error: " . $conn->error;
+}
+
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -191,7 +222,7 @@ $sede_id = $_POST['sede_id'];
                         <span id="current-datetime"></span>
                         <span class="close-button" onclick="toggleCart()">×</span>
                     </div>
-                    <h2>Pedido Nro 010</h2>
+                    <h2>Pedido Nro <?php echo str_pad($siguiente_pedido, 3, '0', STR_PAD_LEFT); ?></h2>
                     <div class="form-row">
                         <label for="mesa">Mesa:</label>
                         <select id="mesa" name="mesa">
