@@ -1,40 +1,33 @@
 <?php
 session_start();
-if (isset($_SESSION['total'])) {
-    echo "Total: S/ " . number_format($_SESSION['total'], 2);
-    $total = $_SESSION['total'];
-} else {
-    echo "La variable 'total' no está disponible.";
-}
-echo "<pre>";
-print_r($_SESSION); // Mostrar lo que hay en la sesión
-echo "</pre>";
+
+
 date_default_timezone_set('America/Lima'); 
 $fechaHoraActual = date('d/m/Y H:i:s');
 $mensajeExito = '';
 
 // Verificar si hay datos en la sesión
-if (isset($_SESSION['tipo_pedido'], $_SESSION['mesa'], $_SESSION['sede_id'], $_SESSION['subtotal'], $_SESSION['igv'], $_SESSION['total'])) {
+if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
     // Recuperar datos de la sesión
-    $cliente_id = $_SESSION['cliente_id'];
-    $tipo_pedido = $_SESSION['tipo_pedido'];
-    $mesaSeleccionada = $_SESSION['mesa'];
-    $sede_id = $_SESSION['sede_id'];
-    $subtotal = $_SESSION['subtotal'];
-    $igv = $_SESSION['igv'];
-    $total = $_SESSION['total'];
+    $cliente_id = 1;
+    $tipo_pedido = 0;
+    $sede_id = 1;
+    $mesaSeleccionada = $_POST['mesa'];
+    $subtotal = $_POST['subtotal'];
+    $igv = $_POST['igv'];
+    $total = $_POST['total'];
 
     // Datos del cliente (si se envían)
-    $nombre_cliente = isset($_SESSION['nombre_cliente']) ? $_SESSION['nombre_cliente'] : '';
-    $apellidos = isset($_SESSION['apellidos']) ? $_SESSION['apellidos'] : '';
-    $tipo_documento = isset($_SESSION['tipo_documento']) ? $_SESSION['tipo_documento'] : '';
-    $nro_documento = isset($_SESSION['nro_documento']) ? $_SESSION['nro_documento'] : '';
-    $correo = isset($_SESSION['correo']) ? $_SESSION['correo'] : '';
-    $telefono = isset($_SESSION['telefono']) ? $_SESSION['telefono'] : '';
-    $direccion = isset($_SESSION['direccion']) ? $_SESSION['direccion'] : '';
+    $nombre_cliente = isset($_POST['nombre_cliente']) ? $_POST['nombre_cliente'] : '';
+    $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : '';
+    $tipo_documento = isset($_POST['tipo_documento']) ? $_POST['tipo_documento'] : '';
+    $nro_documento = isset($_POST['nro_documento']) ? $_POST['nro_documento'] : '';
+    $correo = isset($_POST['correo']) ? $_POST['correo'] : '';
+    $telefono = isset($_POST['telefono']) ? $_POST['telefono'] : '';
+    $direccion = isset($_POST['direccion']) ? $_POST['direccion'] : '';
 
     // Recuperar productos de la sesión
-    $productos = isset($_SESSION['productos']) ? $_SESSION['productos'] : [];
+    $productos = isset($_POST['productos']) ? $_POST['productos'] : [];
 
     // Conectar a la base de datos
     $mysqli = new mysqli("localhost", "root", "", "CafeteriaDB");
@@ -202,7 +195,7 @@ if (isset($_SESSION['tipo_pedido'], $_SESSION['mesa'], $_SESSION['sede_id'], $_S
                 <p><strong>Total: </strong>S/ <?= number_format($total, 2) ?></p>
             </div>
 
-            <a href="../home/index.php" class="btn btn-primary">Regresar a la Página Principal</a>
+            <a href="../../../public/index.php" class="btn btn-primary">Regresar a la Página Principal</a>
         </div>
     </div>
 

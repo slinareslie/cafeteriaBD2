@@ -1,8 +1,9 @@
 <?php
-session_start(); 
-echo "<pre>";
-print_r($_SESSION); // Mostrar lo que hay en la sesión
-echo "</pre>";
+session_start(); // Asegúrate de que session_start() esté al principio del archivo
+error_reporting(0);
+
+// Asegúrate de que no haya ningún echo, print_r o salida antes de session_start
+
 date_default_timezone_set('America/Lima'); 
 $fechaHoraActual = date('d/m/Y H:i:s');
 $mensajeError = ''; // Variable para manejar el error
@@ -22,39 +23,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subtotal = $cartTotalValue; 
     $igv = $subtotal * 0.18; 
     $total = $subtotal + $igv;
-    
-        
-
-        // Guardar los datos del cliente
-
-                $_SESSION['productos'] = isset($_POST['productos']) ? $_POST['productos'] : [];
 
     // Validación de campos obligatorios
     if (empty($_POST['nombre_cliente']) || empty($_POST['apellidos']) || empty($_POST['nro_documento'])) {
-    $mensajeError = "Por favor, complete todos los campos obligatorios (Nombre, Apellidos, Número de documento).";
-} else {
-    // Verifica si los datos están siendo recogidos antes de almacenarlos en la sesión
-    echo "<pre>";
-    print_r($_POST);  // Muestra los datos de $_POST para depurar
-    echo "</pre>";
 
-    $_SESSION['nombre_cliente'] = $_POST['nombre_cliente'];
-    $_SESSION['apellidos'] = $_POST['apellidos'];
-    $_SESSION['tipo_documento'] = $_POST['tipo_documento'];
-    $_SESSION['nro_documento'] = $_POST['nro_documento'];
-    $_SESSION['correo'] = $_POST['correo'] ?? '';
-    $_SESSION['telefono'] = $_POST['telefono'] ?? '';
-    $_SESSION['direccion'] = $_POST['direccion'] ?? '';
 
-    // Guardar los productos si están disponibles en el formulario
-    $_SESSION['productos'] = $_POST['productos'] ?? [];
+        // Almacena los datos en la sesión
+        $_POST['nombre_cliente'] = $_POST['nombre_cliente'];
+        $_POST['apellidos'] = $_POST['apellidos'];
+        $_POST['tipo_documento'] = $_POST['tipo_documento'];
+        $_POST['nro_documento'] = $_POST['nro_documento'];
+        $_POST['correo'] = $_POST['correo'] ?? '';
+        $_POST['telefono'] = $_POST['telefono'] ?? '';
+        $_POST['direccion'] = $_POST['direccion'] ?? '';
 
-    // Si todo está bien, redirigir a pedidoRealizado.php
-    $_SESSION['order_success'] = true;
-    header("Location: pedidoRealizado.php");
-    exit;
-}
+        // Guardar los productos si están disponibles en el formulario
+        $_POST['productos'] = $_POST['productos'] ?? [];
 
+        // Asegúrate de que los datos están guardados en la sesión
+        $_POST['order_success'] = true;
+        session_write_close(); 
+        $mensajeError = "Por favor, complete todos los campos obligatorios (Nombre, Apellidos, Número de documento).";
+    } else {
+        // Verifica si los datos están siendo recogidos antes de almacenarlos en la sesión
+        // Puedes hacer un print_r para depurar lo que estás recibiendo
+        
+
+        // Si todo está bien, redirigir a pedidoRealizado.php
+        $_SESSION['order_success'] = true;
+        session_write_close(); 
+        header("Location: pedidoRealizado.php"); // Asegúrate de que no haya salida antes de esta línea
+        exit;
+    }
 }
 ?>
 
@@ -135,9 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-container">
             <div class="billing-section">
                 <h2>Datos de Facturación</h2>
-                <?php if ($mensajeError): ?>
-                <div class="alert alert-danger"><?= $mensajeError ?></div>
-                <?php endif; ?>
+
                 <div class="form-group flex-container">
                     <label>
                         <input type="checkbox" id="sin-datos-cliente" onclick="toggleCamposAdicionales()">
@@ -191,7 +189,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="igv" value="<?= number_format($igv, 2) ?>">
                     <input type="hidden" name="total" id="total-hidden" value="<?= number_format($total, 2) ?>">
                     <input type="hidden" name="mesa" value="<?= $mesaSeleccionada ?>">
+
                     <button type="submit" class="btn-confirm">Confirmar Pedido</button>
+
                 </form>
             </div>
 
