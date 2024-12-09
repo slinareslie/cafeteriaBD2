@@ -3,7 +3,7 @@ session_start(); // Asegúrate de que session_start() esté al principio del arc
 error_reporting(0);
 
 // Asegúrate de que no haya ningún echo, print_r o salida antes de session_start
-
+$sede_id = $_POST['sede_id'];
 date_default_timezone_set('America/Lima'); 
 $fechaHoraActual = date('d/m/Y H:i:s');
 $mensajeError = ''; // Variable para manejar el error
@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         // Almacena los datos en la sesión
+        $_POST['sede_id'] = $sede_id;
         $_POST['nombre_cliente'] = $_POST['nombre_cliente'];
         $_POST['apellidos'] = $_POST['apellidos'];
         $_POST['tipo_documento'] = $_POST['tipo_documento'];
@@ -185,6 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="tarjeta">Tarjeta</option>
                         </select>
                     </div>
+                    <input type="hidden" name="sede_id" value="<?= $sede_id ?>">
                     <input type="hidden" name="subtotal" value="<?= number_format($subtotal, 2) ?>">
                     <input type="hidden" name="igv" value="<?= number_format($igv, 2) ?>">
                     <input type="hidden" name="total" id="total-hidden" value="<?= number_format($total, 2) ?>">

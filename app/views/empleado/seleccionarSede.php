@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PATOMAR -CAFE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<style>
+    <style>
     #hero {
         background: url('../app//views/img/cafeteria.jpg') no-repeat center center;
         background-size: cover;
@@ -21,7 +22,7 @@
     }
 
     .navbar {
-        height: 100px; 
+        height: 100px;
         transition: background-color 0.3s ease, height 0.3s ease;
     }
 
@@ -31,7 +32,7 @@
 
     .navbar.scrolled {
         background-color: rgba(246, 188, 29, 0.9) !important;
-        height: 80px; 
+        height: 80px;
     }
 
     #hero h1 {
@@ -44,29 +45,29 @@
         font-size: 1.5rem;
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
-
-</style>
+    </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container d-flex justify-content-between align-items-center">
             <div class="d-flex">
-                <ul class="navbar-nav">                    
+                <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
                 </ul>
             </div>
             <div class="d-flex">
-                <ul class="navbar-nav">                    
+                <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
                 </ul>
             </div>
-            
+
             <a class="navbar-brand mx-auto" href="#">
                 <img src="../app//views/img/patomar3.png" alt="Patomar Café" style="height: 50px;">
             </a>
-            
+
             <div class="d-flex align-items-center">
-                <ul class="navbar-nav me-3">                   
+                <ul class="navbar-nav me-3">
                     <li class="nav-item"><a class="nav-link" href="#sedes">Sedes</a></li>
                 </ul>
                 <form action="index.php?controller=empleado&action=verReporte" method="POST">
@@ -74,7 +75,7 @@
                         <span style="color: #ddd;">Reporte</span>
                     </a>
                 </form>
-            </div>  
+            </div>
         </div>
     </nav>
 
@@ -86,14 +87,17 @@
 
     <main class="mt-5">
         <div id="nosotros" class="container py-5">
-            
+
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <h2 class="text-center mb-4">Sobre Nosotros</h2>
                     <p>
-                        En nuestra cafetería, combinamos pasión por el café y el compromiso con la calidad para ofrecerte una experiencia única. 
-                        Cada taza es preparada con granos seleccionados y técnicas artesanales, acompañada de un ambiente acogedor donde puedes relajarte, 
-                        trabajar o compartir momentos especiales. Creemos en la importancia de los detalles y en el poder de una buena conversación 
+                        En nuestra cafetería, combinamos pasión por el café y el compromiso con la calidad para
+                        ofrecerte una experiencia única.
+                        Cada taza es preparada con granos seleccionados y técnicas artesanales, acompañada de un
+                        ambiente acogedor donde puedes relajarte,
+                        trabajar o compartir momentos especiales. Creemos en la importancia de los detalles y en el
+                        poder de una buena conversación
                         alrededor de un excelente café. ¡Bienvenido a nuestra casa!
                     </p>
                 </div>
@@ -102,7 +106,7 @@
                 </div>
             </div>
         </div>
-  
+
         <div id="sedes" class="container py-5 text-center">
             <h2 class="mb-5">Nuestras Sedes</h2>
             <div class="row justify-content-center">
@@ -125,8 +129,11 @@
                         }
                         ?>
                         <form action="index.php?controller=empleado&action=seleccionarProductos" method="POST">
-                            <button type="submit" name="sede_id" value="<?php echo $sede['sede_id']; ?>" class="border-0 p-0 bg-transparent">
-                                <img src="../app/views/img/<?php echo htmlspecialchars($imagen); ?>" alt="<?php echo htmlspecialchars($sede['nombre_sede']); ?>" class="card-img-top img-fluid rounded">
+                            <input type="hidden" name="sede_id" value="<?php echo $sede['sede_id']; ?>">
+                            <button type="submit" class="border-0 p-0 bg-transparent">
+                                <img src="../app/views/img/<?php echo htmlspecialchars($imagen); ?>"
+                                    alt="<?php echo htmlspecialchars($sede['nombre_sede']); ?>"
+                                    class="card-img-top img-fluid rounded">
                             </button>
                         </form>
                         <div class="card-body">
@@ -140,24 +147,24 @@
         </div>
 
         <style>
-            #sedes h2 {
-                font-size: 2.5rem;
-                font-weight: bold;
-                color: #333;
-            }
+        #sedes h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
 
-            #sedes img {
-                transition: transform 0.3s ease;
-            }
+        #sedes img {
+            transition: transform 0.3s ease;
+        }
 
-            #sedes img:hover {
-                transform: scale(1.05); 
-            }
+        #sedes img:hover {
+            transform: scale(1.05);
+        }
 
-            #sedes .card-text {
-                font-size: 1.2rem;
-                color: #555;
-            }
+        #sedes .card-text {
+            font-size: 1.2rem;
+            color: #555;
+        }
         </style>
     </main>
 
@@ -167,14 +174,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('scroll', function () {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+    document.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
     </script>
 </body>
+
 </html>

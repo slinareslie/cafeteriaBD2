@@ -10,8 +10,8 @@ $mensajeExito = '';
 if (isset($_POST['mesa'], $_POST['subtotal'], $_POST['igv'], $_POST['total'])) {
     // Recuperar datos de la sesión
     $cliente_id = 1;
-    $tipo_pedido = 0;
-    $sede_id = 1;
+    $tipo_pedido = 'local';
+    $sede_id = $_POST['sede_id'];
     $mesaSeleccionada = $_POST['mesa'];
     $subtotal = $_POST['subtotal'];
     $igv = $_POST['igv'];
