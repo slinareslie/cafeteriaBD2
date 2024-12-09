@@ -73,6 +73,15 @@ $conn->close();
     background-color: rgba(246, 188, 29, 0.9) !important;
     height: 80px;
 }
+.nav-link {
+    color: #ffffff; /* Cambia el color al que prefieras */
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: #954321; /* Cambia el color al que prefieras */
+    
+}
 
 #hero h1 {
     font-size: 4rem;
@@ -94,7 +103,7 @@ $conn->close();
 
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-lg  fixed-top bg-dark">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <div class="d-flex">
                 <ul class="navbar-nav">

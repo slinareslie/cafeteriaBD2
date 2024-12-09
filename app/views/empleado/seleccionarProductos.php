@@ -72,6 +72,16 @@ $conn->close();
     height: 80px;
 }
 
+.nav-link {
+    color: #ffffff; /* Cambia el color al que prefieras */
+    font-weight: bold;
+}
+
+.nav-link:hover {
+    color: #954321; /* Cambia el color al que prefieras */
+    
+}
+
 #hero h1 {
     font-size: 4rem;
     font-weight: bold;
